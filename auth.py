@@ -16,8 +16,9 @@ from fastapi import APIRouter, Request
 from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse
 
 import audit
+from config import data_path
 
-AUTH_USERS_FILE = os.path.abspath("auth_users.json")
+AUTH_USERS_FILE = data_path("auth_users.json")
 SESSION_COOKIE = "sesion"
 SESSION_MAX_AGE = 60 * 60 * 12  # 12 horas
 

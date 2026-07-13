@@ -31,6 +31,7 @@ from auth import (
     ROLE_ADMIN,
 )
 import audit
+from config import data_path
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, PageBreak, PageTemplate, Frame
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.colors import black
@@ -185,7 +186,7 @@ async def get_banpe_cod_tables_data_js():
         raise HTTPException(status_code=404, detail="Archivo banpe-cod-tables-data.js no encontrado")
 
 
-BANPE_DATA_DIR = os.path.abspath("banpe_data")
+BANPE_DATA_DIR = data_path("banpe_data")
 
 # Columnas Excel: puntuación normalizada por área (BANPE)
 BANPE_PNORM_EXCEL_COLUMNS = [
@@ -332,8 +333,8 @@ async def get_eni2_js():
         raise HTTPException(status_code=404, detail="Archivo eni2.js no encontrado")
 
 # Crear directorio para archivos temporales
-UPLOAD_DIR = os.path.abspath("uploads")
-METADATA_FILE = os.path.abspath("file_metadata.json")
+UPLOAD_DIR = data_path("uploads")
+METADATA_FILE = data_path("file_metadata.json")
 
 
 if not os.path.exists(UPLOAD_DIR):
@@ -344,12 +345,29 @@ if not os.path.exists(METADATA_FILE):
     with open(METADATA_FILE, 'w', encoding='utf-8') as f:
         json.dump([], f, indent=2, ensure_ascii=False)
 
+def _portable_upload_path(entry):
+    """Devuelve la ruta del archivo dentro del UPLOAD_DIR actual.
+
+    Ignora la ruta absoluta almacenada (que puede ser de otro sistema
+    operativo) y la reconstruye a partir del nombre del archivo, admitiendo
+    separadores de Windows y de Linux.
+    """
+    name = entry.get("processed_filename")
+    if not name:
+        raw = (entry.get("file_path") or "").replace("\\", "/")
+        name = os.path.basename(raw)
+    return os.path.join(UPLOAD_DIR, name) if name else entry.get("file_path", "")
+
+
 # Cargar metadatos existentes
 def load_metadata():
     try:
         if os.path.exists(METADATA_FILE):
             with open(METADATA_FILE, 'r', encoding='utf-8') as f:
                 data = json.load(f)
+                for entry in data:
+                    if isinstance(entry, dict):
+                        entry["file_path"] = _portable_upload_path(entry)
                 return data
         else:
             return []

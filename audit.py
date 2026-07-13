@@ -13,7 +13,9 @@ import json
 import time
 import threading
 
-AUDIT_FILE = os.path.abspath("audit_log.jsonl")
+from config import data_path
+
+AUDIT_FILE = data_path("audit_log.jsonl")
 
 _lock = threading.Lock()
 

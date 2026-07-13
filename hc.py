@@ -28,20 +28,42 @@ from io import BytesIO
 # Router para las rutas de historia clínica
 hc_router = APIRouter(prefix="/api/hc", tags=["Historia Clínica"])
 
+from config import data_path
+
 # Ruta de metadatos compartida con el resto de la app
-METADATA_FILE = os.path.abspath("file_metadata.json")
+METADATA_FILE = data_path("file_metadata.json")
 # Ruta para almacenar datos completos de HC (para exportación PDF)
-HC_DATA_DIR = os.path.abspath("hc_data")
+HC_DATA_DIR = data_path("hc_data")
+# Directorio de bases de datos (Excel) subidas
+UPLOAD_DIR = data_path("uploads")
 
 # Crear directorio si no existe
 if not os.path.exists(HC_DATA_DIR):
     os.makedirs(HC_DATA_DIR)
 
+
+def _portable_upload_path(entry):
+    """Reconstruye la ruta del Excel en el UPLOAD_DIR actual.
+
+    Ignora la ruta absoluta almacenada (puede provenir de otro sistema
+    operativo) y admite separadores de Windows y de Linux.
+    """
+    name = entry.get("processed_filename")
+    if not name:
+        raw = (entry.get("file_path") or "").replace("\\", "/")
+        name = os.path.basename(raw)
+    return os.path.join(UPLOAD_DIR, name) if name else entry.get("file_path", "")
+
+
 def load_metadata():
     """Cargar metadatos de archivos procesados"""
     if os.path.exists(METADATA_FILE):
         with open(METADATA_FILE, 'r', encoding='utf-8') as f:
-            return json.load(f)
+            data = json.load(f)
+            for entry in data:
+                if isinstance(entry, dict):
+                    entry["file_path"] = _portable_upload_path(entry)
+            return data
     return []
 
 def save_metadata(metadata):
