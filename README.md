@@ -26,6 +26,7 @@ El proyecto se encuentra en **fase piloto funcional**. Los módulos principales 
 
 | Módulo | Estado |
 |---|---|
+| Autenticación, control de acceso y gestión de usuarios por rol | Funcional |
 | Gestión de bases de datos y generación de IDs únicos | Funcional |
 | Historia Clínica del paciente | Funcional |
 | Antropometría y percentiles OMS | Funcional |
@@ -36,6 +37,15 @@ El proyecto se encuentra en **fase piloto funcional**. Los módulos principales 
 | Análisis de Datos (descriptivo, inferencial, avanzado, fetal) | Funcional |
 
 ## Módulos y funcionalidades
+
+### Acceso, autenticación y roles
+- Inicio de sesión obligatorio: toda la aplicación (páginas y APIs) queda protegida; sin sesión válida solo es accesible la pantalla de login.
+- Sesión mediante cookie firmada (HMAC, `HttpOnly`), sin dependencias externas adicionales.
+- **Registro gestionado por el administrador** (no hay registro público). Panel de administración en `/usuarios` para crear y eliminar cuentas.
+- **Roles de acceso**:
+  - **Admin**: acceso total (Protocolo, Análisis de Datos y gestión de usuarios).
+  - **Investigador**: acceso únicamente al módulo Protocolo; el módulo Análisis de Datos queda oculto y bloqueado.
+- La cuenta de administrador se crea automáticamente en el primer arranque y siempre se garantiza su existencia.
 
 ### 1. Gestión de bases de datos e identificadores
 - Carga de archivos Excel (`.xlsx`, `.xls`) con vista previa de los datos.
@@ -143,6 +153,11 @@ Para detener el servidor, presiona `Ctrl + C`. El puerto puede cambiarse con la 
 - **Build Command**: `pip install -r requirements.txt`
 - **Start Command**: `python main.py` (la app lee `PORT` y escucha en `0.0.0.0`)
 - **Runtime**: Python 3.13 (definido en `.python-version`)
+- **Variables de entorno recomendadas**:
+  - `SECRET_KEY`: cadena larga y aleatoria para firmar la cookie de sesión.
+  - `ADMIN_PASSWORD`: contraseña de la cuenta de administrador (si no se define, se usa un valor por defecto).
+
+> Nota: en planes con disco efímero, las cuentas creadas pueden perderse tras un redespliegue; la cuenta de administrador se regenera automáticamente. Para persistencia total, usar un disco persistente o una base de datos.
 
 ## Confidencialidad de datos
 
