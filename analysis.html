@@ -1,0 +1,1356 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análisis de Datos - Protocolo de Investigación</title>
+    <link rel="stylesheet" href="static/style.css">
+    <link rel="stylesheet" href="/analysis.css">
+    <link rel="stylesheet" href="/analysis-inferencial.css">
+    <link rel="stylesheet" href="/analysis-avanzado.css">
+    <link rel="stylesheet" href="/analysis-fetal.css">
+    <link rel="stylesheet" href="/analysis-prelim-metodos.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    <script src="/analysis-plotly.js"></script>
+</head>
+<body>
+    <div id="analysisToastContainer" class="analysis-toast-container" aria-live="polite"></div>
+
+    <div id="analysisLoadingOverlay" class="analysis-loading-overlay" aria-hidden="true">
+        <div class="analysis-loading-box">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p id="analysisLoadingText">Procesando...</p>
+        </div>
+    </div>
+
+    <div id="analysisConfirmModal" class="analysis-confirm-modal" aria-hidden="true">
+        <div class="analysis-confirm-backdrop" data-confirm-cancel tabindex="-1"></div>
+        <div class="analysis-confirm-dialog" role="dialog" aria-modal="true" aria-labelledby="analysisConfirmTitle">
+            <div class="analysis-confirm-icon" id="analysisConfirmIcon" aria-hidden="true">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <h3 id="analysisConfirmTitle" class="analysis-confirm-title">Confirmar acción</h3>
+            <p id="analysisConfirmMessage" class="analysis-confirm-message"></p>
+            <div class="analysis-confirm-actions">
+                <button type="button" class="analysis-btn" id="analysisConfirmCancelBtn">Cancelar</button>
+                <button type="button" class="analysis-btn analysis-confirm-ok" id="analysisConfirmOkBtn">Aceptar</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="top-nav-shell">
+            <nav class="top-nav" aria-label="Menú principal">
+                <a href="/" class="top-nav-link">Protocolo</a>
+                <a href="/analysis" class="top-nav-link active">Análisis de Datos</a>
+            </nav>
+        </div>
+
+        <header class="header">
+            <div class="header-content">
+                <i class="fas fa-graduation-cap header-icon"></i>
+                <h1>Protocolo de Investigación</h1>
+                <h2>Escuela Superior de Medicina</h2>
+                <h3>Instituto Politécnico Nacional</h3>
+                <p>Obesidad-Inflamación crónica y actividad Cognitiva</p>
+            </div>
+        </header>
+
+        <main class="main-content analysis-main">
+            <div class="analysis-phase-tabs" role="tablist" aria-label="Fases del análisis">
+                <button type="button" class="analysis-phase-tab active" role="tab" aria-selected="true" data-phase="preliminares" id="tabPreliminares">
+                    <i class="fas fa-database"></i>
+                    <span class="tab-label-long">Resultados Preliminares</span>
+                    <span class="tab-label-short">Preliminares</span>
+                </button>
+                <button type="button" class="analysis-phase-tab" role="tab" aria-selected="false" data-phase="generales" id="tabGenerales">
+                    <i class="fas fa-chart-pie"></i>
+                    <span class="tab-label-long">Resultados Generales</span>
+                    <span class="tab-label-short">Generales</span>
+                    <span class="tab-badge">Próximo</span>
+                </button>
+            </div>
+
+            <section id="analysisPanelPreliminares" class="analysis-phase-panel active" role="tabpanel" aria-labelledby="tabPreliminares">
+                <nav class="analysis-prelim-tabs" role="tablist" aria-label="Secciones de resultados preliminares">
+                    <button type="button" class="analysis-prelim-tab active" role="tab" aria-selected="true" data-prelim-section="carga" id="tabPrelimCarga">
+                        <i class="fas fa-file-upload"></i>
+                        <span>Carga de datos</span>
+                    </button>
+                    <button type="button" class="analysis-prelim-tab" role="tab" aria-selected="false" data-prelim-section="descriptivo" id="tabPrelimDescriptivo">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>Análisis descriptivo</span>
+                    </button>
+                    <button type="button" class="analysis-prelim-tab" role="tab" aria-selected="false" data-prelim-section="inferencial" id="tabPrelimInferencial">
+                        <i class="fas fa-flask"></i>
+                        <span>Análisis inferencial</span>
+                    </button>
+                    <button type="button" class="analysis-prelim-tab" role="tab" aria-selected="false" data-prelim-section="avanzado" id="tabPrelimAvanzado">
+                        <i class="fas fa-project-diagram"></i>
+                        <span>Análisis avanzado</span>
+                    </button>
+                    <button type="button" class="analysis-prelim-tab" role="tab" aria-selected="false" data-prelim-section="fetal" id="tabPrelimFetal">
+                        <i class="fas fa-baby"></i>
+                        <span>Programación fetal</span>
+                    </button>
+                    <button type="button" class="analysis-prelim-tab" role="tab" aria-selected="false" data-prelim-section="metodos" id="tabPrelimMetodos">
+                        <i class="fas fa-book"></i>
+                        <span>Métodos utilizados</span>
+                    </button>
+                </nav>
+
+                <div id="analysisPrelimPanelCarga" class="analysis-prelim-panel active" role="tabpanel" aria-labelledby="tabPrelimCarga" data-prelim-section="carga">
+                <article class="analysis-card">
+                    <header class="analysis-card-header">
+                        <h3><i class="fas fa-file-excel"></i> Archivo Excel</h3>
+                    </header>
+                    <div class="analysis-card-body">
+                        <p class="analysis-card-lead">
+                            Seleccione el archivo Excel con los datos del estudio.
+                        </p>
+                        <input type="file" id="analysisFileInput" class="analysis-hidden-input" accept=".xlsx,.xls" />
+                        <div id="analysisUploadZone" class="analysis-upload-zone" tabindex="0" role="button" aria-label="Cargar archivo Excel">
+                            <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                            <p><strong>Arrastre su archivo Excel aquí</strong> o haga clic para seleccionarlo</p>
+                            <p class="hint">Formatos .xlsx / .xls · máximo 50 MB</p>
+                            <button type="button" id="analysisPickFileBtn" class="analysis-btn analysis-btn-primary" style="margin-top:16px">
+                                <i class="fas fa-folder-open"></i> Elegir archivo
+                            </button>
+                        </div>
+
+                        <div id="analysisDatasetsList" class="analysis-datasets-list" aria-label="Bases guardadas en análisis"></div>
+                    </div>
+                </article>
+
+                <div id="analysisActiveBanner" class="analysis-active-banner" hidden>
+                    <div class="meta">
+                        <h4><i class="fas fa-check-circle"></i> Base activa para el análisis</h4>
+                        <p id="analysisActiveFilename">—</p>
+                        <div class="stats">
+                            <span><i class="fas fa-table"></i> <span id="analysisActiveRows">0</span> filas</span>
+                            <span><i class="fas fa-columns"></i> <span id="analysisActiveCols">0</span> variables</span>
+                            <span><i class="fas fa-clock"></i> Actualizado: <span id="analysisActiveUpdated">—</span></span>
+                        </div>
+                    </div>
+                    <button type="button" id="analysisRemoveActiveBtn" class="analysis-btn analysis-btn-danger">
+                        <i class="fas fa-trash"></i> Quitar base
+                    </button>
+                </div>
+
+                <article id="analysisPreviewSection" class="analysis-card" hidden>
+                    <header class="analysis-card-header">
+                        <h3><i class="fas fa-eye"></i> Vista previa de la base de datos</h3>
+                    </header>
+                    <div class="analysis-card-body">
+                        <div class="analysis-table-wrap">
+                            <table>
+                                <thead id="analysisPreviewHead"></thead>
+                                <tbody id="analysisPreviewBody"></tbody>
+                            </table>
+                        </div>
+                        <p id="analysisPreviewNote" class="analysis-preview-note"></p>
+                    </div>
+                </article>
+
+                <article id="analysisVariablesSection" class="analysis-card" hidden>
+                    <header class="analysis-card-header">
+                        <h3><i class="fas fa-tags"></i> Variables y tipo de medición</h3>
+                    </header>
+                    <div class="analysis-card-body">
+                        <p class="analysis-card-lead">
+                            Revise el tipo asignado a cada variable. Los cambios se guardan automáticamente.
+                        </p>
+                        <div class="analysis-table-wrap">
+                            <table class="analysis-vars-table">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Variable</th>
+                                        <th class="col-type">Tipo de variable</th>
+                                        <th>Valores únicos</th>
+                                        <th>Faltantes</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="analysisVariablesBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </article>
+                </div>
+
+                <div id="analysisPrelimPanelDescriptivo" class="analysis-prelim-panel" role="tabpanel" aria-labelledby="tabPrelimDescriptivo" data-prelim-section="descriptivo" hidden>
+                    <div id="analysisDescNoData" class="analysis-empty-state" hidden>
+                        <i class="fas fa-database"></i>
+                        <p>Cargue una base de datos en la pestaña <strong>Carga de datos</strong> para continuar.</p>
+                    </div>
+
+                    <div id="analysisDescContent">
+                        <details class="analysis-expander" open>
+                            <summary><span class="analysis-expander-num">1.1</span> Descripción de la población general</summary>
+                            <div class="analysis-expander-body">
+                                <div class="analysis-desc-controls analysis-desc-controls-row">
+                                    <label class="analysis-desc-field">Variable <select id="desc11Var"></select></label>
+                                    <label class="analysis-desc-field">Distribución por <select id="desc11BoxGroup"><option value="">— No aplicar —</option></select></label>
+                                    <div class="analysis-desc-actions">
+                                        <button type="button" class="analysis-btn analysis-btn-primary" id="desc11Run"><i class="fas fa-play"></i> Generar</button>
+                                    </div>
+                                </div><div id="desc11Results" class="analysis-desc-results"></div>
+
+                                <div id="desc11CompareSection" class="analysis-desc-compare-section" hidden>
+                                    <div class="analysis-desc-controls analysis-desc-compare-controls">
+                                        <label class="analysis-desc-field">Comparar por <select id="desc11GroupBy"><option value="">— No aplicar —</option></select></label>
+                                    </div>
+                                    <h4 id="desc11CompareTitle" class="analysis-desc-compare-title" hidden>Distribución de — por —</h4>
+                                    <div id="desc11CompareResults" class="analysis-desc-results"></div>
+                                </div>
+                            </div>
+                        </details>
+
+                        <details class="analysis-expander">
+                            <summary><span class="analysis-expander-num">1.2</span> Descripción antropométrica y perfil lipídico</summary>
+                            <div class="analysis-expander-body">
+                                <div class="analysis-desc-controls">
+                                    <label>Variable de agrupación <select id="desc12GroupBy" class="analysis-desc-select-wide"></select></label>
+                                </div>
+                                <h4 class="analysis-desc-subtitle"><i class="fas fa-ruler-vertical"></i> Antropométrica</h4>
+                                <label class="analysis-desc-field">Variable <select id="desc12AnthroVar" class="analysis-desc-select-wide"></select></label>
+                                <button type="button" class="analysis-btn analysis-btn-primary" id="desc12AnthroRun"><i class="fas fa-play"></i> Generar</button>
+                                <div id="desc12AnthroResults" class="analysis-desc-results"></div>
+                                <h4 class="analysis-desc-subtitle"><i class="fas fa-vial"></i> Perfil lipídico</h4>
+                                <label class="analysis-desc-field">Variable <select id="desc12LipidVar" class="analysis-desc-select-wide"></select></label>
+                                <button type="button" class="analysis-btn analysis-btn-primary" id="desc12LipidRun"><i class="fas fa-play"></i> Generar</button>
+                                <div id="desc12LipidResults" class="analysis-desc-results"></div>
+                            </div>
+                        </details>
+
+                        <details class="analysis-expander">
+                            <summary><span class="analysis-expander-num">1.3</span> Variables perinatales y maternas/paternas</summary>
+                            <div class="analysis-expander-body">
+                                <p class="analysis-desc13-intro">
+                                    Patrones visuales descriptivos: cómo eventos perinatales/maternos/paternos se asocian con marcadores
+                                    metabólicos o antropométricos actuales del niño. Sin pruebas de hipótesis.
+                                </p>
+                                <nav class="analysis-desc13-tabs" role="tablist" aria-label="Gráficas perinatales">
+                                    <button type="button" class="analysis-desc13-tab active" role="tab" aria-selected="true" data-desc13-tab="pcp" id="desc13TabPcp">
+                                        <i class="fas fa-project-diagram"></i><span>Coordenadas paralelas</span>
+                                    </button>
+                                    <button type="button" class="analysis-desc13-tab" role="tab" aria-selected="false" data-desc13-tab="alluvial" id="desc13TabAlluvial">
+                                        <i class="fas fa-water"></i><span>Diagrama de aluvión</span>
+                                    </button>
+                                    <button type="button" class="analysis-desc13-tab" role="tab" aria-selected="false" data-desc13-tab="heatmap" id="desc13TabHeatmap">
+                                        <i class="fas fa-th"></i><span>Heatmap eventos adversos</span>
+                                    </button>
+                                    <button type="button" class="analysis-desc13-tab" role="tab" aria-selected="false" data-desc13-tab="radar" id="desc13TabRadar">
+                                        <i class="fas fa-chart-area"></i><span>Radar comparativo</span>
+                                    </button>
+                                    <button type="button" class="analysis-desc13-tab" role="tab" aria-selected="false" data-desc13-tab="density" id="desc13TabDensity">
+                                        <i class="fas fa-chart-line"></i><span>Densidad condicional</span>
+                                    </button>
+                                    <button type="button" class="analysis-desc13-tab" role="tab" aria-selected="false" data-desc13-tab="scatter" id="desc13TabScatter">
+                                        <i class="fas fa-braille"></i><span>Matriz dispersión</span>
+                                    </button>
+                                </nav>
+                                <div class="analysis-desc13-panel active" role="tabpanel" data-desc13-tab="pcp" aria-labelledby="desc13TabPcp">
+                                    <p class="analysis-desc13-panel-intro">
+                                        Cada línea es un niño. Jitter y suavizado separan trayectorias; los ejes binarios pueden
+                                        reordenarse por asociación con el marcador final.
+                                    </p>
+                                    <nav class="analysis-desc13-subtabs" role="tablist" aria-label="Vistas PCP">
+                                        <button type="button" class="analysis-desc13-subtab active" data-pcp-view="single" role="tab" aria-selected="true">Vista principal</button>
+                                        <button type="button" class="analysis-desc13-subtab" data-pcp-view="compare" role="tab" aria-selected="false">Comparativo (TG · No-HDL · IMC)</button>
+                                    </nav>
+                                    <div id="desc13PcpSingleView" class="analysis-pcp-view active">
+                                        <div class="analysis-pcp-options">
+                                            <label class="analysis-pcp-option"><input type="checkbox" id="desc13PcpJitter" checked /> Jitter en binarios</label>
+                                            <label class="analysis-pcp-option"><input type="checkbox" id="desc13PcpReorder" checked /> Reordenar ejes por asociación</label>
+                                            <label class="analysis-pcp-option"><input type="checkbox" id="desc13PcpSpline" checked /> Suavizado (spline)</label>
+                                            <label class="analysis-pcp-option"><input type="checkbox" id="desc13PcpCluster" /> Color por cluster (k=3)</label>
+                                        </div>
+                                        <div class="analysis-desc-controls analysis-desc-controls-row">
+                                            <label class="analysis-desc-field">Marcador metabólico del niño (eje final)
+                                                <select id="desc13PcpOutcome" class="analysis-desc-select-wide"></select>
+                                            </label>
+                                            <div class="analysis-desc-actions">
+                                                <button type="button" class="analysis-btn analysis-btn-primary" id="desc13PcpRun"><i class="fas fa-play"></i> Generar</button>
+                                            </div>
+                                        </div>
+                                        <div id="desc13PcpResults" class="analysis-desc-results"></div>
+                                    </div>
+                                    <div id="desc13PcpCompareView" class="analysis-pcp-view" hidden>
+                                        <p class="analysis-preview-note">Tres paneles: mismo perfil perinatal, distinto marcador final (exposoma metabólico).</p>
+                                        <div class="analysis-desc-actions">
+                                            <button type="button" class="analysis-btn analysis-btn-primary" id="desc13PcpCompareRun"><i class="fas fa-play"></i> Generar comparativo</button>
+                                        </div>
+                                        <div id="desc13PcpCompareResults" class="analysis-desc-results"></div>
+                                    </div>
+                                </div>
+                                <div class="analysis-desc13-panel" role="tabpanel" data-desc13-tab="alluvial" aria-labelledby="desc13TabAlluvial" hidden>
+                                    <p class="analysis-desc13-panel-intro">
+                                        Elija las variables categóricas del flujo (de izquierda a derecha). El diagrama se actualiza al cambiar
+                                        la selección. El grosor de cada banda es proporcional al número de niños en esa combinación.
+                                    </p>
+                                    <div class="analysis-alluvial-focus-wrap">
+                                        <p class="analysis-field-label">Enfoque analítico sugerido</p>
+                                        <div id="desc13AlluvialFocusPresets" class="analysis-alluvial-focus-presets" role="radiogroup" aria-label="Enfoques sugeridos para el diagrama de aluvión"></div>
+                                        <div id="desc13AlluvialFocusDetail" class="analysis-alluvial-focus-detail" hidden></div>
+                                    </div>
+                                    <div class="analysis-alluvial-stages-wrap">
+                                        <p class="analysis-field-label">Variables del flujo <span class="analysis-field-hint">(orden = ejes izq. → der.; editable si elige «Otro»)</span></p>
+                                        <div id="desc13AlluvialStagesList" class="analysis-alluvial-stages-list"></div>
+                                        <div class="analysis-alluvial-stages-actions">
+                                            <button type="button" class="analysis-btn analysis-btn-secondary analysis-btn-sm" id="desc13AlluvialAddStage">
+                                                <i class="fas fa-plus"></i> Añadir eje
+                                            </button>
+                                            <span id="desc13AlluvialStageHint" class="analysis-alluvial-hint"></span>
+                                        </div>
+                                    </div>
+                                    <div id="desc13AlluvialResults" class="analysis-desc-results"></div>
+                                </div>
+
+                                <div class="analysis-desc13-panel" role="tabpanel" data-desc13-tab="heatmap" aria-labelledby="desc13TabHeatmap" hidden>
+                                    <div class="analysis-desc-controls analysis-desc-controls-row">
+                                        <label class="analysis-desc-field">Ordenar filas por (marcador del niño)
+                                            <select id="desc13HeatmapSort" class="analysis-desc-select-wide"></select>
+                                        </label>
+                                        <div class="analysis-desc-actions">
+                                            <button type="button" class="analysis-btn analysis-btn-primary" id="desc13HeatmapRun"><i class="fas fa-play"></i> Generar</button>
+                                        </div>
+                                    </div>
+                                    <div id="desc13HeatmapResults" class="analysis-desc-results"></div>
+                                </div>
+
+                                <div class="analysis-desc13-panel" role="tabpanel" data-desc13-tab="radar" aria-labelledby="desc13TabRadar" hidden>
+                                    <div class="analysis-desc-controls analysis-desc-controls-row">
+                                        <label class="analysis-desc-field">Comparar grupos
+                                            <select id="desc13RadarCompare" class="analysis-desc-select-wide"></select>
+                                        </label>
+                                        <div class="analysis-desc-actions">
+                                            <button type="button" class="analysis-btn analysis-btn-primary" id="desc13RadarRun"><i class="fas fa-play"></i> Generar</button>
+                                        </div>
+                                    </div>
+                                    <div id="desc13RadarResults" class="analysis-desc-results"></div>
+                                </div>
+
+                                <div class="analysis-desc13-panel" role="tabpanel" data-desc13-tab="density" aria-labelledby="desc13TabDensity" hidden>
+                                    <div class="analysis-desc-controls analysis-desc-controls-row">
+                                        <label class="analysis-desc-field">Estratificar por
+                                            <select id="desc13DensityStratify" class="analysis-desc-select-wide"></select>
+                                        </label>
+                                        <label class="analysis-desc-field">Variable del niño
+                                            <select id="desc13DensityVariable" class="analysis-desc-select-wide"></select>
+                                        </label>
+                                        <div class="analysis-desc-actions">
+                                            <button type="button" class="analysis-btn analysis-btn-primary" id="desc13DensityRun"><i class="fas fa-play"></i> Generar</button>
+                                        </div>
+                                    </div>
+                                    <div id="desc13DensityResults" class="analysis-desc-results"></div>
+                                </div>
+                                <div class="analysis-desc13-panel" role="tabpanel" data-desc13-tab="scatter" aria-labelledby="desc13TabScatter" hidden>
+                                    <p class="analysis-desc13-panel-intro">
+                                        Matriz de dispersión condicionada: triángulo superior = primer grupo; inferior = segundo.
+                                        Variables del niño: IMC, triglicéridos, HDL, glucosa y edad. Curvas LOESS por celda.
+                                    </p>
+                                    <div class="analysis-desc-controls analysis-desc-controls-row">
+                                        <label class="analysis-desc-field">Estratificar por
+                                            <select id="desc13ScatterStratify" class="analysis-desc-select-wide"></select>
+                                        </label>
+                                        <div class="analysis-desc-actions">
+                                            <button type="button" class="analysis-btn analysis-btn-primary" id="desc13ScatterRun"><i class="fas fa-play"></i> Generar</button>
+                                        </div>
+                                    </div>
+                                    <div id="desc13ScatterResults" class="analysis-desc-results"></div>
+                                </div>
+                            </div>
+                        </details>
+
+                        <details class="analysis-expander">
+                            <summary><span class="analysis-expander-num">1.4</span> Correlaciones simples</summary>
+                            <div class="analysis-expander-body">
+                                <p class="analysis-desc-pairs-intro">
+                                    La matriz y el diagrama de dispersión calculan cada par con los mismos casos (dato en ambas variables).
+                                    El coeficiente entre X e Y no cambia al incluir más columnas. La celda de la matriz coincide con
+                                    «Coeficiente de la matriz» en el gráfico (Pearson o Spearman según el par).
+                                </p>
+                                <p class="analysis-field-label">Conjunto sugerido</p>
+                                <div id="desc14Presets" class="analysis-corr-presets" role="radiogroup" aria-label="Conjuntos de variables sugeridos"></div>
+                                <div class="analysis-corr-options">
+                                    <label class="analysis-corr-switch">
+                                        <input type="checkbox" id="desc14ByCondition" />
+                                        <span class="analysis-corr-switch-ui" aria-hidden="true"></span>
+                                        <span class="analysis-corr-switch-label">Mostrar matrices por <span id="desc14ConditionLabel">Condición</span></span>
+                                    </label>
+                                </div>
+                                <label class="analysis-field-label" for="desc14Vars">Variables numéricas</label>
+                                <select id="desc14Vars" class="analysis-desc-multiselect analysis-desc-multiselect--corr" multiple></select>
+                                <div class="analysis-desc-actions">
+                                    <button type="button" class="analysis-btn analysis-btn-primary" id="desc14Run"><i class="fas fa-play"></i> Generar matriz</button>
+                                </div>
+                                <div id="desc14Results" class="analysis-desc-results"></div>
+
+                                <div id="desc14PairsSection" class="analysis-desc-pairs-section">
+                                    <h4 class="analysis-desc-subtitle">Correlaciones exploratorias por pares (Spearman)</h4>
+                                    <p class="analysis-desc-pairs-intro">
+                                        Cada opción representa un par de variables. Se muestra dispersión con puntos por condición de peso,
+                                        tendencia LOESS y el coeficiente ρ de Spearman con su valor p.
+                                    </p>
+                                    <div class="analysis-table-wrap analysis-desc-pairs-table-wrap">
+                                        <table class="analysis-data-table analysis-desc-pairs-table">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">#</th>
+                                                    <th scope="col">Variable X</th>
+                                                    <th scope="col">Variable Y</th>
+                                                    <th scope="col">Justificación del insight esperado</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>1</td>
+                                                    <td>IMC actual del niño</td>
+                                                    <td>Triglicéridos</td>
+                                                    <td>Relación clásica obesidad–dislipidemia. Correlación positiva moderada a alta esperada.</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>2</td>
+                                                    <td>Peso al nacer (kg)</td>
+                                                    <td>Glucosa en ayuno del niño</td>
+                                                    <td>Programación fetal: bajo peso o macrosomía y alteraciones de glucosa en la niñez.</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>3</td>
+                                                    <td>Semanas de gestación</td>
+                                                    <td>Perímetro cefálico del niño</td>
+                                                    <td>Crecimiento cerebral; gestación pretérmino y menor perímetro en seguimiento.</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>4</td>
+                                                    <td>Circunferencia de cintura del niño</td>
+                                                    <td>Colesterol no HDL</td>
+                                                    <td>Adiposidad central más aterogénica que el IMC; correlación positiva esperada.</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>5</td>
+                                                    <td>Edad del niño</td>
+                                                    <td>Colesterol total</td>
+                                                    <td>Cambio del perfil lipídico con la edad; útil para ajustar por edad en modelos futuros.</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <p class="analysis-field-label">Seleccione un par</p>
+                                    <div id="desc14PairPresets" class="analysis-corr-presets" role="radiogroup" aria-label="Pares de correlación"></div>
+                                    <div id="desc14PairResults" class="analysis-desc-results"></div>
+
+                                    <div id="desc14CustomScatterSection" class="analysis-desc-custom-scatter-section">
+                                        <h4 class="analysis-desc-subtitle">Diagrama de dispersión personalizado</h4>
+                                        <p class="analysis-desc-pairs-intro">
+                                            Elija dos variables numéricas. Mismo cálculo que la matriz para el coeficiente principal.
+                                        </p>
+                                        <div class="analysis-desc-scatter-controls">
+                                            <label class="analysis-desc-field" for="desc14ScatterX">
+                                                Variable X
+                                                <select id="desc14ScatterX" class="analysis-desc-select-wide"></select>
+                                            </label>
+                                            <label class="analysis-desc-field" for="desc14ScatterY">
+                                                Variable Y
+                                                <select id="desc14ScatterY" class="analysis-desc-select-wide"></select>
+                                            </label>
+                                        </div>
+                                        <div class="analysis-desc-actions">
+                                            <button type="button" class="analysis-btn analysis-btn-primary" id="desc14CustomScatterRun">
+                                                <i class="fas fa-play"></i> Generar dispersión
+                                            </button>
+                                        </div>
+                                        <div id="desc14CustomScatterResults" class="analysis-desc-results"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </details>
+                    </div>
+                </div>
+
+                <div id="analysisPrelimPanelInferencial" class="analysis-prelim-panel analysis-infer-panel" role="tabpanel" aria-labelledby="tabPrelimInferencial" data-prelim-section="inferencial" hidden>
+                    <div id="analysisInferNoData" class="analysis-empty-state" hidden>
+                        <i class="fas fa-database"></i>
+                        <p>Cargue una base de datos en la pestaña <strong>Carga de datos</strong> para continuar.</p>
+                    </div>
+
+                    <div id="analysisInferContent">
+                        <p class="analysis-infer-intro">
+                            <strong>Módulo 2 · Análisis inferencial.</strong> Elija un submódulo según el tipo de
+                            variables y la prueba que desea aplicar.
+                        </p>
+
+                        <nav class="analysis-infer-subtabs" role="tablist" aria-label="Submódulos inferenciales">
+                            <button
+                                type="button"
+                                class="analysis-infer-subtab active"
+                                role="tab"
+                                id="inferTabAnova"
+                                aria-selected="true"
+                                aria-controls="inferSubmoduleAnova"
+                                data-infer-submodule="anova"
+                            >
+                                <i class="fas fa-chart-column" aria-hidden="true"></i>
+                                <span>ANOVA / Kruskal-Wallis</span>
+                            </button>
+                            <button
+                                type="button"
+                                class="analysis-infer-subtab"
+                                role="tab"
+                                id="inferTabChisq"
+                                aria-selected="false"
+                                aria-controls="inferSubmoduleChisq"
+                                data-infer-submodule="chisq"
+                            >
+                                <i class="fas fa-table" aria-hidden="true"></i>
+                                <span>Chi-Cuadrado / Fisher</span>
+                            </button>
+                            <button
+                                type="button"
+                                class="analysis-infer-subtab"
+                                role="tab"
+                                id="inferTabRegression"
+                                aria-selected="false"
+                                aria-controls="inferSubmoduleRegression"
+                                data-infer-submodule="regression"
+                            >
+                                <i class="fas fa-chart-line" aria-hidden="true"></i>
+                                <span>Regresión lineal</span>
+                            </button>
+                        </nav>
+
+                        <div
+                            id="inferSubmoduleAnova"
+                            class="analysis-infer-submodule active"
+                            role="tabpanel"
+                            aria-labelledby="inferTabAnova"
+                            data-infer-submodule="anova"
+                        >
+                            <nav class="analysis-infer-inner-tabs" role="tablist" aria-label="Subsecciones ANOVA">
+                                <button
+                                    type="button"
+                                    class="analysis-infer-inner-tab active"
+                                    role="tab"
+                                    id="inferAnovaTabGroups"
+                                    aria-selected="true"
+                                    aria-controls="inferAnovaPanelGroups"
+                                    data-anova-panel="groups"
+                                >
+                                    Comparación de grupos
+                                </button>
+                                <button
+                                    type="button"
+                                    class="analysis-infer-inner-tab"
+                                    role="tab"
+                                    id="inferAnovaTabAncova"
+                                    aria-selected="false"
+                                    aria-controls="inferAnovaPanelAncova"
+                                    data-anova-panel="ancova"
+                                >
+                                    ANCOVA (ajuste por covariables)
+                                </button>
+                            </nav>
+
+                            <div
+                                id="inferAnovaPanelGroups"
+                                class="analysis-infer-inner-panel active"
+                                role="tabpanel"
+                                aria-labelledby="inferAnovaTabGroups"
+                            >
+                            <p class="analysis-infer-subintro">
+                                Seleccione variables, verifique supuestos y ejecute la prueba de comparación de grupos
+                                con post-hoc (ANOVA, Welch o Kruskal-Wallis).
+                            </p>
+
+                        <div id="inferStepSetup" class="analysis-infer-step">
+                            <div class="analysis-infer-profile-grid">
+                                <div id="inferLipidProfile" class="analysis-infer-profile"></div>
+                                <div id="inferAnthroProfile" class="analysis-infer-profile analysis-infer-profile--anthro"></div>
+                            </div>
+                            <div class="analysis-infer-selectors">
+                                <label class="analysis-desc-field">Variable factor (grupo)
+                                    <select id="inferFactor" class="analysis-desc-select-wide"></select>
+                                </label>
+                                <label class="analysis-desc-field">Variable dependiente (numérica)
+                                    <select id="inferDependent" class="analysis-desc-select-wide"></select>
+                                </label>
+                            </div>
+                            <div class="analysis-infer-actions">
+                                <button type="button" class="analysis-btn analysis-btn-primary" id="inferVerifyAssumptions">
+                                    <i class="fas fa-clipboard-check"></i> Verificar supuestos
+                                </button>
+                            </div>
+                        </div>
+
+                        <div id="inferStepAssumptions" class="analysis-infer-step" hidden>
+                            <h3 class="analysis-infer-step-title"><span>1</span> Verificación de supuestos</h3>
+                            <div id="inferAssumptionsMount"></div>
+                            <div class="analysis-infer-decision">
+                                <p>Según su revisión, seleccione la prueba a aplicar:</p>
+                                <div class="analysis-infer-method-options" role="radiogroup" aria-label="Prueba inferencial">
+                                    <label><input type="radio" name="inferMethod" value="anova" /> ANOVA de una vía</label>
+                                    <label><input type="radio" name="inferMethod" value="welch" /> ANOVA de Welch</label>
+                                    <label><input type="radio" name="inferMethod" value="kruskal" /> Kruskal-Wallis</label>
+                                </div>
+                                <label class="analysis-infer-confirm">
+                                    <input type="checkbox" id="inferAssumptionsConfirm" />
+                                    Declaro haber revisado los supuestos y elijo la prueba indicada.
+                                </label>
+                                <div class="analysis-infer-actions">
+                                    <button type="button" class="analysis-btn analysis-btn-secondary" id="inferBackFromAssumptions">
+                                        <i class="fas fa-arrow-left"></i> Regresar
+                                    </button>
+                                    <button type="button" class="analysis-btn analysis-btn-primary" id="inferNextToTest" disabled>
+                                        Siguiente <i class="fas fa-arrow-right"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="inferStepTest" class="analysis-infer-step" hidden>
+                            <h3 class="analysis-infer-step-title"><span>2</span> Prueba de comparación de grupos</h3>
+                            <div id="inferTestMount"></div>
+                            <div class="analysis-infer-actions" style="margin-top:24px">
+                                <button type="button" class="analysis-btn analysis-btn-secondary" id="inferBackToSetup">
+                                    <i class="fas fa-redo"></i> Volver al inicio / otra variable de respuesta
+                                </button>
+                            </div>
+                        </div>
+                            </div>
+
+                            <div
+                                id="inferAnovaPanelAncova"
+                                class="analysis-infer-inner-panel"
+                                role="tabpanel"
+                                aria-labelledby="inferAnovaTabAncova"
+                                hidden
+                            >
+                                <p class="analysis-infer-subintro">
+                                    Compare grupos del factor <strong>ajustando por covariables</strong> (p. ej. edad y
+                                    peso al nacer) para aislar el efecto de la condición. Se evalúan normalidad de
+                                    residuos, homogeneidad de varianzas y <em>homogeneidad de pendientes</em>
+                                    (interacción grupo×covariable).
+                                </p>
+
+                                <div id="ancStepSetup" class="analysis-infer-step">
+                                    <div class="analysis-infer-profile-grid">
+                                        <div id="ancLipidProfile" class="analysis-infer-profile"></div>
+                                        <div id="ancAnthroProfile" class="analysis-infer-profile analysis-infer-profile--anthro"></div>
+                                    </div>
+                                    <div class="analysis-infer-selectors">
+                                        <label class="analysis-desc-field">Variable factor (grupo)
+                                            <select id="ancFactor" class="analysis-desc-select-wide"></select>
+                                        </label>
+                                        <label class="analysis-desc-field">Variable dependiente (numérica)
+                                            <select id="ancDependent" class="analysis-desc-select-wide"></select>
+                                        </label>
+                                    </div>
+                                    <fieldset class="analysis-infer-cov-fieldset">
+                                        <legend>Covariables de ajuste</legend>
+                                        <p class="analysis-infer-cov-hint">
+                                            Por defecto: edad y peso al nacer. Opcionales: semanas de gestación, sexo,
+                                            talla al nacer (según disponibilidad en la base).
+                                        </p>
+                                        <div id="ancCovariatesMount" class="analysis-infer-cov-grid"></div>
+                                    </fieldset>
+                                    <div class="analysis-infer-actions">
+                                        <button type="button" class="analysis-btn analysis-btn-primary" id="ancVerifyAssumptions">
+                                            <i class="fas fa-clipboard-check"></i> Verificar supuestos ANCOVA
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div id="ancStepAssumptions" class="analysis-infer-step" hidden>
+                                    <h3 class="analysis-infer-step-title"><span>1</span> Supuestos de la ANCOVA</h3>
+                                    <div id="ancAssumptionsMount"></div>
+                                    <div class="analysis-infer-decision">
+                                        <label class="analysis-infer-confirm">
+                                            <input type="checkbox" id="ancAssumptionsConfirm" />
+                                            Declaro haber revisado los supuestos y deseo aplicar ANCOVA.
+                                        </label>
+                                        <div class="analysis-infer-actions">
+                                            <button type="button" class="analysis-btn analysis-btn-secondary" id="ancBackFromAssumptions">
+                                                <i class="fas fa-arrow-left"></i> Regresar
+                                            </button>
+                                            <button type="button" class="analysis-btn analysis-btn-primary" id="ancRunAnalysis" disabled>
+                                                Ejecutar ANCOVA <i class="fas fa-play"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div id="ancStepResults" class="analysis-infer-step" hidden>
+                                    <h3 class="analysis-infer-step-title"><span>2</span> Resultados ANCOVA</h3>
+                                    <div id="ancResultsMount"></div>
+                                    <div class="analysis-infer-actions" style="margin-top:24px">
+                                        <button type="button" class="analysis-btn analysis-btn-secondary" id="ancBackToSetup">
+                                            <i class="fas fa-redo"></i> Volver al inicio
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div
+                            id="inferSubmoduleChisq"
+                            class="analysis-infer-submodule"
+                            role="tabpanel"
+                            aria-labelledby="inferTabChisq"
+                            data-infer-submodule="chisq"
+                            hidden
+                        >
+                            <nav class="analysis-infer-section-tabs" role="tablist" aria-label="Subsecciones Chi-cuadrado">
+                                <button type="button" class="analysis-infer-section-tab active" role="tab" id="chisqTabAssociation" data-chisq-section="association" aria-selected="true" aria-controls="chisqSectionAssociation">
+                                    Asociación categórica
+                                </button>
+                                <button type="button" class="analysis-infer-section-tab" role="tab" id="chisqTabContinuous" data-chisq-section="continuous" aria-selected="false" aria-controls="chisqSectionContinuous">
+                                    t de Student / Mann-Whitney
+                                </button>
+                            </nav>
+
+                            <div id="chisqSectionAssociation" class="analysis-infer-section-panel active" role="tabpanel" aria-labelledby="chisqTabAssociation" data-chisq-section="association">
+                                <p class="analysis-infer-subintro">
+                                    <strong>Asociación entre variables perinatales y condición de peso.</strong>
+                                    Tablas de contingencia con χ² de Pearson, corrección de Yates o Fisher según frecuencias esperadas.
+                                </p>
+                                <div id="chisqAssocProfile" class="analysis-infer-profile analysis-infer-profile--perinatal"></div>
+                                <div id="chisqAssocStepSetup" class="analysis-infer-step">
+                                    <div class="analysis-infer-selectors">
+                                        <label class="analysis-desc-field">Variable perinatal (predictora)
+                                            <select id="chisqAssocPredictor" class="analysis-desc-select-wide"></select>
+                                        </label>
+                                        <label class="analysis-desc-field">Condición de peso (respuesta)
+                                            <select id="chisqAssocOutcome" class="analysis-desc-select-wide"></select>
+                                        </label>
+                                    </div>
+                                    <div class="analysis-infer-actions">
+                                        <button type="button" class="analysis-btn analysis-btn-primary" id="chisqAssocVerifyAssumptions">
+                                            <i class="fas fa-clipboard-check"></i> Verificar supuestos
+                                        </button>
+                                    </div>
+                                </div>
+                                <div id="chisqAssocStepAssumptions" class="analysis-infer-step" hidden>
+                                    <h3 class="analysis-infer-step-title"><span>1</span> Supuestos de la tabla de contingencia</h3>
+                                    <div id="chisqAssocAssumptionsMount"></div>
+                                    <div class="analysis-infer-decision">
+                                        <p>Según su revisión, seleccione la prueba:</p>
+                                        <div class="analysis-infer-method-options" role="radiogroup" aria-label="Prueba de asociación">
+                                            <label><input type="radio" name="chisqAssocMethod" value="pearson" /> Chi-cuadrado de Pearson</label>
+                                            <label><input type="radio" name="chisqAssocMethod" value="yates" /> Chi-cuadrado (Yates)</label>
+                                            <label><input type="radio" name="chisqAssocMethod" value="fisher" /> Fisher exacto</label>
+                                        </div>
+                                        <label class="analysis-infer-confirm">
+                                            <input type="checkbox" id="chisqAssocAssumptionsConfirm" />
+                                            Declaro haber revisado los supuestos y elijo la prueba indicada.
+                                        </label>
+                                        <div class="analysis-infer-actions">
+                                            <button type="button" class="analysis-btn analysis-btn-secondary" id="chisqAssocBackFromAssumptions">
+                                                <i class="fas fa-arrow-left"></i> Regresar
+                                            </button>
+                                            <button type="button" class="analysis-btn analysis-btn-primary" id="chisqAssocNextToTest" disabled>
+                                                Siguiente <i class="fas fa-arrow-right"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="chisqAssocStepTest" class="analysis-infer-step" hidden>
+                                    <h3 class="analysis-infer-step-title"><span>2</span> Resultados de asociación</h3>
+                                    <div id="chisqAssocTestMount"></div>
+                                    <div class="analysis-infer-actions" style="margin-top:24px">
+                                        <button type="button" class="analysis-btn analysis-btn-secondary" id="chisqAssocBackToSetup">
+                                            <i class="fas fa-redo"></i> Volver al inicio
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="chisqSectionContinuous" class="analysis-infer-section-panel" role="tabpanel" aria-labelledby="chisqTabContinuous" data-chisq-section="continuous" hidden>
+                                <p class="analysis-infer-subintro">
+                                    <strong>Peso al nacer y semanas de gestación (continuos) vs condición de peso.</strong>
+                                    Prueba <em>t</em> de Student o U de Mann-Whitney según normalidad y homogeneidad de varianzas.
+                                </p>
+                                <div id="chisqContStepSetup" class="analysis-infer-step">
+                                    <div class="analysis-infer-selectors">
+                                        <label class="analysis-desc-field">Variable perinatal continua
+                                            <select id="chisqContPredictor" class="analysis-desc-select-wide"></select>
+                                        </label>
+                                        <label class="analysis-desc-field">Condición de peso (grupos)
+                                            <select id="chisqContOutcome" class="analysis-desc-select-wide"></select>
+                                        </label>
+                                    </div>
+                                    <div id="chisqContGroupPair" class="analysis-infer-selectors" hidden>
+                                        <label class="analysis-desc-field">Grupo 1 (Condicion)
+                                            <select id="chisqContGroupA" class="analysis-desc-select-wide"></select>
+                                        </label>
+                                        <label class="analysis-desc-field">Grupo 2 (Condicion)
+                                            <select id="chisqContGroupB" class="analysis-desc-select-wide"></select>
+                                        </label>
+                                    </div>
+                                    <div class="analysis-infer-actions">
+                                        <button type="button" class="analysis-btn analysis-btn-primary" id="chisqContVerifyAssumptions">
+                                            <i class="fas fa-clipboard-check"></i> Verificar supuestos
+                                        </button>
+                                    </div>
+                                </div>
+                                <div id="chisqContStepAssumptions" class="analysis-infer-step" hidden>
+                                    <h3 class="analysis-infer-step-title"><span>1</span> Supuestos (normalidad y homogeneidad)</h3>
+                                    <div id="chisqContAssumptionsMount"></div>
+                                    <div class="analysis-infer-decision">
+                                        <p>Seleccione la prueba:</p>
+                                        <div class="analysis-infer-method-options" role="radiogroup" aria-label="Prueba comparación de medias">
+                                            <label><input type="radio" name="chisqContMethod" value="ttest" /> t de Student</label>
+                                            <label><input type="radio" name="chisqContMethod" value="mannwhitney" /> Mann-Whitney U</label>
+                                        </div>
+                                        <label class="analysis-infer-confirm">
+                                            <input type="checkbox" id="chisqContAssumptionsConfirm" />
+                                            Declaro haber revisado los supuestos y elijo la prueba indicada.
+                                        </label>
+                                        <div class="analysis-infer-actions">
+                                            <button type="button" class="analysis-btn analysis-btn-secondary" id="chisqContBackFromAssumptions">
+                                                <i class="fas fa-arrow-left"></i> Regresar
+                                            </button>
+                                            <button type="button" class="analysis-btn analysis-btn-primary" id="chisqContNextToTest" disabled>
+                                                Siguiente <i class="fas fa-arrow-right"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="chisqContStepTest" class="analysis-infer-step" hidden>
+                                    <h3 class="analysis-infer-step-title"><span>2</span> Resultados de comparación</h3>
+                                    <div id="chisqContTestMount"></div>
+                                    <div class="analysis-infer-actions" style="margin-top:24px">
+                                        <button type="button" class="analysis-btn analysis-btn-secondary" id="chisqContBackToSetup">
+                                            <i class="fas fa-redo"></i> Volver al inicio
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div
+                            id="inferSubmoduleRegression"
+                            class="analysis-infer-submodule"
+                            role="tabpanel"
+                            aria-labelledby="inferTabRegression"
+                            data-infer-submodule="regression"
+                            hidden
+                        >
+                            <p class="analysis-infer-subintro">
+                                <strong>Asociación entre antecedentes maternos y marcadores del niño.</strong>
+                                Regresión lineal simple y múltiple ajustada por edad y sexo del niño.
+                                Intervalos de confianza al 95&nbsp;% por bootstrap (tamaño muestral).
+                            </p>
+                            <div id="regFetalInsight" class="analysis-infer-profile analysis-infer-profile--fetal"></div>
+                            <div id="regModelDesignNote" class="analysis-infer-profile"></div>
+                            <div id="regStepSetup" class="analysis-infer-step">
+                                <div class="analysis-infer-selectors">
+                                    <label class="analysis-desc-field">Antecedente materno (predictor X)
+                                        <select id="regPredictor" class="analysis-desc-select-wide"></select>
+                                    </label>
+                                    <label class="analysis-desc-field">Perfil del niño (variable de respuesta Y)
+                                        <select id="regOutcomeProfile" class="analysis-desc-select-wide">
+                                            <option value="lipid_metabolic">Perfil lipídico / metabólico</option>
+                                            <option value="anthropometric">Perfil antropométrico</option>
+                                        </select>
+                                    </label>
+                                    <label class="analysis-desc-field">Variable de respuesta
+                                        <select id="regOutcome" class="analysis-desc-select-wide"></select>
+                                    </label>
+                                </div>
+                                <p class="analysis-infer-stat-line">
+                                    <strong>Modelo simple:</strong> Y ~ antecedente materno (0=No, 1=Sí).
+                                    <strong>Modelo múltiple:</strong> Y ~ antecedente + <strong>edad</strong> + <strong>sexo</strong> del niño
+                                    (covariables de ajuste; un solo antecedente materno por análisis).
+                                </p>
+                                <div class="analysis-infer-actions">
+                                    <button type="button" class="analysis-btn analysis-btn-primary" id="regVerifyAssumptions">
+                                        <i class="fas fa-clipboard-check"></i> Verificar supuestos
+                                    </button>
+                                </div>
+                            </div>
+                            <div id="regStepAssumpSimple" class="analysis-infer-step" hidden>
+                                <h3 class="analysis-infer-step-title">Supuestos — regresión lineal simple</h3>
+                                <div id="regAssumpSimpleMount"></div>
+                                <div class="analysis-infer-decision">
+                                    <label class="analysis-infer-confirm">
+                                        <input type="checkbox" id="regConfirmSimple" />
+                                        He revisado los supuestos del modelo simple y la recomendación.
+                                    </label>
+                                    <div class="analysis-infer-actions">
+                                        <button type="button" class="analysis-btn analysis-btn-secondary" id="regBackFromAssumpSimple">
+                                            <i class="fas fa-arrow-left"></i> Regresar
+                                        </button>
+                                        <button type="button" class="analysis-btn analysis-btn-primary" id="regNextToAssumpMulti" disabled>
+                                            Siguiente <i class="fas fa-arrow-right"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="regStepAssumpMultiple" class="analysis-infer-step" hidden>
+                                <h3 class="analysis-infer-step-title">Supuestos — regresión lineal múltiple</h3>
+                                <div id="regAssumpMultipleMount"></div>
+                                <div class="analysis-infer-decision">
+                                    <label class="analysis-infer-confirm">
+                                        <input type="checkbox" id="regConfirmMultiple" />
+                                        He revisado los supuestos del modelo múltiple (incl. multicolinealidad).
+                                    </label>
+                                    <div class="analysis-infer-actions">
+                                        <button type="button" class="analysis-btn analysis-btn-secondary" id="regBackFromAssumpMulti">
+                                            <i class="fas fa-arrow-left"></i> Regresar
+                                        </button>
+                                        <button type="button" class="analysis-btn analysis-btn-primary" id="regRunAnalysis" disabled>
+                                            <i class="fas fa-play"></i> Ejecutar regresión
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="regStepResults" class="analysis-infer-step" hidden>
+                                <h3 class="analysis-infer-step-title">Resultados de regresión</h3>
+                                <div id="regResultsMount"></div>
+                                <div class="analysis-infer-actions" style="margin-top:24px">
+                                    <button type="button" class="analysis-btn analysis-btn-secondary" id="regBackToSetup">
+                                        <i class="fas fa-redo"></i> Nueva selección
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    id="analysisPrelimPanelAvanzado"
+                    class="analysis-prelim-panel analysis-avanz-panel"
+                    role="tabpanel"
+                    aria-labelledby="tabPrelimAvanzado"
+                    data-prelim-section="avanzado"
+                    hidden
+                >
+                    <div id="analysisAvanzNoData" class="analysis-empty-state" hidden>
+                        <i class="fas fa-database"></i>
+                        <p>Cargue una base de datos en la pestaña <strong>Carga de datos</strong> para continuar.</p>
+                    </div>
+
+                    <div id="analysisAvanzContent">
+                        <p class="analysis-avanz-intro">
+                            <strong>Módulo 3 · Análisis avanzado.</strong> Técnicas multivariadas para explorar
+                            estructuras latentes en antropometría, lípidos y marcadores perinatales.
+                        </p>
+
+                        <nav class="analysis-avanz-subtabs" role="tablist" aria-label="Submódulos avanzados">
+                            <button
+                                type="button"
+                                class="analysis-avanz-subtab active"
+                                role="tab"
+                                id="avanzTabPca"
+                                aria-selected="true"
+                                aria-controls="avanzSubmodulePca"
+                                data-avanz-submodule="pca"
+                            >
+                                <i class="fas fa-braille" aria-hidden="true"></i>
+                                <span>PCA</span>
+                            </button>
+                            <button
+                                type="button"
+                                class="analysis-avanz-subtab"
+                                role="tab"
+                                id="avanzTabMediation"
+                                aria-selected="false"
+                                aria-controls="avanzSubmoduleMediation"
+                                data-avanz-submodule="mediation"
+                            >
+                                <i class="fas fa-route" aria-hidden="true"></i>
+                                <span>Mediación exploratoria</span>
+                            </button>
+                        </nav>
+
+                        <div
+                            id="avanzSubmodulePca"
+                            class="analysis-avanz-submodule active"
+                            role="tabpanel"
+                            aria-labelledby="avanzTabPca"
+                            data-avanz-submodule="pca"
+                        >
+                            <p class="analysis-avanz-subintro">
+                                <strong>Análisis de componentes principales.</strong> Variables activas estandarizadas
+                                (IMC, antropometría, perfil lipídico, edad y marcadores perinatales). Identifique si
+                                peso al nacer y semanas de gestación forman un eje distinto del riesgo metabólico actual.
+                            </p>
+
+                            <div id="pcaStepSetup" class="analysis-avanz-step">
+                                <div id="pcaVariablesMount" class="analysis-avanz-vars"></div>
+
+                                <div class="analysis-avanz-controls">
+                                    <label class="analysis-desc-field">
+                                        Rotación
+                                        <select id="pcaRotation" class="analysis-desc-select-wide"></select>
+                                    </label>
+                                    <button
+                                        type="button"
+                                        class="analysis-btn analysis-btn-ghost"
+                                        id="pcaRotationInfoBtn"
+                                        title="Cuándo usar cada rotación"
+                                    >
+                                        <i class="fas fa-circle-info"></i> Guía de rotaciones
+                                    </button>
+                                </div>
+
+                                <div id="pcaRotationInfo" class="analysis-avanz-info-panel" hidden>
+                                    <h4 id="pcaRotationInfoTitle">¿Cuándo usar cada rotación?</h4>
+                                    <div id="pcaRotationInfoBody"></div>
+                                    <button type="button" class="analysis-btn analysis-btn-secondary analysis-btn-sm" id="pcaRotationInfoClose">
+                                        Cerrar
+                                    </button>
+                                </div>
+
+                                <div class="analysis-avanz-actions">
+                                    <button type="button" class="analysis-btn analysis-btn-primary" id="pcaRunBtn">
+                                        <i class="fas fa-play"></i> Ejecutar PCA
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div id="pcaStepResults" class="analysis-avanz-step" hidden>
+                                <div id="pcaResultsMount"></div>
+                                <div class="analysis-avanz-actions" style="margin-top: 24px">
+                                    <button type="button" class="analysis-btn analysis-btn-secondary" id="pcaBackBtn">
+                                        <i class="fas fa-redo"></i> Nueva ejecución
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div
+                            id="avanzSubmoduleMediation"
+                            class="analysis-avanz-submodule"
+                            role="tabpanel"
+                            aria-labelledby="avanzTabMediation"
+                            data-avanz-submodule="mediation"
+                            hidden
+                        >
+                            <p class="analysis-avanz-subintro" id="medIntroText">
+                                <strong>Mediación exploratoria.</strong>
+                                Evalúe si un antecedente materno se asocia con triglicéridos del niño
+                                de forma directa (programación fetal) o vía IMC actual (transmisión posnatal).
+                            </p>
+
+                            <div id="medStepSetup" class="analysis-avanz-step">
+                                <p id="medMethodNote" class="analysis-infer-stat-line"></p>
+                                <div class="analysis-avanz-controls">
+                                    <label class="analysis-desc-field">Exposición materna (X)
+                                        <select id="medExposure" class="analysis-desc-select-wide"></select>
+                                    </label>
+                                </div>
+                                <p id="medHypothesisText" class="analysis-infer-stat-line"></p>
+                                <div id="medVariablesMount"></div>
+                                <label class="analysis-infer-confirm">
+                                    <input type="checkbox" id="medAdjustCovariates" checked />
+                                    Ajustar por edad y sexo del niño en todos los modelos
+                                </label>
+                                <div class="analysis-avanz-actions" style="margin-top: 16px">
+                                    <button type="button" class="analysis-btn analysis-btn-primary" id="medRunBtn">
+                                        <i class="fas fa-play"></i> Ejecutar mediación (bootstrap)
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div id="medStepResults" class="analysis-avanz-step" hidden>
+                                <div id="medResultsMount"></div>
+                                <div class="analysis-avanz-actions" style="margin-top: 24px">
+                                    <button type="button" class="analysis-btn analysis-btn-secondary" id="medBackBtn">
+                                        <i class="fas fa-redo"></i> Nueva ejecución
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    id="analysisPrelimPanelFetal"
+                    class="analysis-prelim-panel analysis-fetal-panel"
+                    role="tabpanel"
+                    aria-labelledby="tabPrelimFetal"
+                    data-prelim-section="fetal"
+                    hidden
+                >
+                    <div id="analysisFetalNoData" class="analysis-empty-state" hidden>
+                        <i class="fas fa-database"></i>
+                        <p>Cargue una base de datos en la pestaña <strong>Carga de datos</strong> para continuar.</p>
+                    </div>
+
+                    <div id="analysisFetalContent">
+                        <p class="analysis-fetal-intro">
+                            <strong>Programación fetal y riesgo cardiometabólico en la infancia.</strong>
+                            En esta sección se resume la exposición perinatal mediante un índice de adversidad (IAP),
+                            se contrasta con la condición de peso del niño y se explora el perfil lipídico con
+                            comparaciones, correlaciones y modelos predictivos (regresión LASSO y árbol de decisión).
+                        </p>
+
+                        <nav class="analysis-fetal-subtabs" role="tablist" aria-label="Submódulos programación fetal">
+                            <button
+                                type="button"
+                                class="analysis-fetal-subtab active"
+                                role="tab"
+                                aria-selected="true"
+                                data-fetal-submodule="iap"
+                            >
+                                <i class="fas fa-calculator" aria-hidden="true"></i>
+                                <span>Calcular IAP</span>
+                            </button>
+                            <button
+                                type="button"
+                                class="analysis-fetal-subtab"
+                                role="tab"
+                                aria-selected="false"
+                                data-fetal-submodule="compare"
+                            >
+                                <i class="fas fa-balance-scale" aria-hidden="true"></i>
+                                <span>Comparar IAP</span>
+                            </button>
+                            <button
+                                type="button"
+                                class="analysis-fetal-subtab"
+                                role="tab"
+                                aria-selected="false"
+                                data-fetal-submodule="correlate"
+                            >
+                                <i class="fas fa-chart-scatter" aria-hidden="true"></i>
+                                <span>Correlacionar IAP</span>
+                            </button>
+                            <button
+                                type="button"
+                                class="analysis-fetal-subtab"
+                                role="tab"
+                                aria-selected="false"
+                                data-fetal-submodule="lasso"
+                            >
+                                <i class="fas fa-filter" aria-hidden="true"></i>
+                                <span>LASSO obesidad</span>
+                            </button>
+                            <button
+                                type="button"
+                                class="analysis-fetal-subtab"
+                                role="tab"
+                                aria-selected="false"
+                                data-fetal-submodule="tree"
+                            >
+                                <i class="fas fa-sitemap" aria-hidden="true"></i>
+                                <span>Árbol CART</span>
+                            </button>
+                        </nav>
+
+                        <div class="analysis-fetal-submodule active" data-fetal-submodule="iap" role="tabpanel">
+                            <div class="analysis-fetal-subintro analysis-fetal-iap-definition" id="fetalIapIntro">
+                                Cargando definición del IAP…
+                            </div>
+                            <div id="fetalIapComponentsMount"></div>
+                            <div id="fetalIapStepSetup" class="analysis-fetal-step">
+                                <div class="analysis-fetal-actions">
+                                    <button type="button" class="analysis-btn analysis-btn-primary" id="fetalIapRunBtn">
+                                        <i class="fas fa-play"></i> Calcular IAP
+                                    </button>
+                                </div>
+                            </div>
+                            <div id="fetalIapStepResults" class="analysis-fetal-step" hidden>
+                                <h3 class="analysis-infer-step-title">Resultados del IAP</h3>
+                                <div id="fetalIapResultsMount"></div>
+                                <div class="analysis-fetal-actions" style="margin-top: 24px">
+                                    <button type="button" class="analysis-btn analysis-btn-secondary" id="fetalIapBackBtn">
+                                        <i class="fas fa-redo"></i> Nueva ejecución
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="analysis-fetal-submodule" data-fetal-submodule="compare" role="tabpanel" hidden>
+                            <p class="analysis-fetal-subintro" id="fetalCompareIntro">
+                                Mann-Whitney del IAP entre dos categorías de Condicion (incluye sobrepeso).
+                            </p>
+                            <div id="fetalCompareGroupsMount"></div>
+                            <div id="fetalCompareStepSetup" class="analysis-fetal-step">
+                                <div class="analysis-fetal-compare-controls">
+                                    <label class="analysis-fetal-compare-label">
+                                        Grupo A (Condicion)
+                                        <select id="fetalCompareGroupA" class="analysis-desc-select-wide"></select>
+                                    </label>
+                                    <label class="analysis-fetal-compare-label">
+                                        Grupo B (Condicion)
+                                        <select id="fetalCompareGroupB" class="analysis-desc-select-wide"></select>
+                                    </label>
+                                </div>
+                                <div class="analysis-fetal-actions">
+                                    <button type="button" class="analysis-btn analysis-btn-primary" id="fetalCompareRunBtn">
+                                        <i class="fas fa-play"></i> Comparar IAP
+                                    </button>
+                                </div>
+                            </div>
+                            <div id="fetalCompareStepResults" class="analysis-fetal-step" hidden>
+                                <h3 class="analysis-infer-step-title">Comparación IAP por condición</h3>
+                                <div id="fetalCompareResultsMount"></div>
+                                <div class="analysis-fetal-actions" style="margin-top: 24px">
+                                    <button type="button" class="analysis-btn analysis-btn-secondary" id="fetalCompareBackBtn">
+                                        <i class="fas fa-redo"></i> Nueva ejecución
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="analysis-fetal-submodule" data-fetal-submodule="correlate" role="tabpanel" hidden>
+                            <p class="analysis-fetal-subintro" id="fetalCorrelateIntro">
+                                Matriz de correlación de Spearman entre IAP y triglicéridos, HDL y glucosa.
+                            </p>
+                            <div id="fetalCorrelateStepSetup" class="analysis-fetal-step">
+                                <div class="analysis-fetal-actions">
+                                    <button type="button" class="analysis-btn analysis-btn-primary" id="fetalCorrelateRunBtn">
+                                        <i class="fas fa-play"></i> Correlacionar IAP
+                                    </button>
+                                </div>
+                            </div>
+                            <div id="fetalCorrelateStepResults" class="analysis-fetal-step" hidden>
+                                <h3 class="analysis-infer-step-title">Matriz de correlación IAP</h3>
+                                <div id="fetalCorrelateResultsMount"></div>
+                                <div class="analysis-fetal-actions" style="margin-top: 24px">
+                                    <button type="button" class="analysis-btn analysis-btn-secondary" id="fetalCorrelateBackBtn">
+                                        <i class="fas fa-redo"></i> Nueva ejecución
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="analysis-fetal-submodule" data-fetal-submodule="lasso" role="tabpanel" hidden>
+                            <p class="analysis-fetal-subintro" id="fetalLassoIntro">
+                                Regresión logística LASSO (α=1, CV 10 pliegues) para obesidad vs normopeso.
+                            </p>
+                            <div id="fetalLassoGuideMount"></div>
+                            <div id="fetalLassoVarMount" class="analysis-fetal-lasso-vars"></div>
+                            <div id="fetalLassoStepSetup" class="analysis-fetal-step">
+                                <div class="analysis-fetal-actions">
+                                    <button type="button" class="analysis-btn analysis-btn-primary" id="fetalLassoRunBtn">
+                                        <i class="fas fa-play"></i> Ejecutar LASSO
+                                    </button>
+                                </div>
+                            </div>
+                            <div id="fetalLassoStepResults" class="analysis-fetal-step" hidden>
+                                <h3 class="analysis-infer-step-title">Predictores seleccionados</h3>
+                                <div id="fetalLassoResultsMount"></div>
+                                <div class="analysis-fetal-actions" style="margin-top: 24px">
+                                    <button type="button" class="analysis-btn analysis-btn-secondary" id="fetalLassoBackBtn">
+                                        <i class="fas fa-redo"></i> Nueva ejecución
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="analysis-fetal-submodule" data-fetal-submodule="tree" role="tabpanel" hidden>
+                            <p class="analysis-fetal-subintro" id="fetalTreeIntro">
+                                Árbol de clasificación CART con poda para reglas de riesgo perinatal.
+                            </p>
+                            <div id="fetalTreeGuideMount"></div>
+                            <div class="analysis-fetal-tree-controls">
+                                <label>Variable objetivo
+                                    <select id="fetalTreeOutcomeMode" class="analysis-desc-select-wide"></select>
+                                </label>
+                            </div>
+                            <div id="fetalTreeStepSetup" class="analysis-fetal-step">
+                                <div class="analysis-fetal-actions">
+                                    <button type="button" class="analysis-btn analysis-btn-primary" id="fetalTreeRunBtn">
+                                        <i class="fas fa-play"></i> Generar árbol
+                                    </button>
+                                </div>
+                            </div>
+                            <div id="fetalTreeStepResults" class="analysis-fetal-step" hidden>
+                                <h3 class="analysis-infer-step-title">Árbol de decisión y reglas</h3>
+                                <div id="fetalTreeResultsMount"></div>
+                                <div class="analysis-fetal-actions" style="margin-top: 24px">
+                                    <button type="button" class="analysis-btn analysis-btn-secondary" id="fetalTreeBackBtn">
+                                        <i class="fas fa-redo"></i> Nueva ejecución
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    id="analysisPrelimPanelMetodos"
+                    class="analysis-prelim-panel"
+                    role="tabpanel"
+                    aria-labelledby="tabPrelimMetodos"
+                    data-prelim-section="metodos"
+                    hidden
+                >
+                    <article class="analysis-card">
+                        <div class="analysis-card-body">
+                            <div id="analysisPrelimMetodosMount">
+                                <p class="analysis-metodos-intro">Cargando síntesis de métodos estadísticos…</p>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+
+            </section>
+
+            <section id="analysisPanelGenerales" class="analysis-phase-panel" role="tabpanel" aria-labelledby="tabGenerales" hidden>
+                <article class="analysis-card">
+                    <div class="analysis-card-body">
+                        <div class="analysis-generales-placeholder">
+                            <i class="fas fa-chart-bar"></i>
+                            <h3>Resultados Generales</h3>
+                            <p>
+                                Aquí se mostrarán los análisis inferenciales, tablas consolidadas y gráficos de resultados finales
+                                una vez completada la fase preliminar.
+                            </p>
+                        </div>
+                    </div>
+                </article>
+            </section>
+        </main>
+    </div>
+
+    <script src="/analysis-main.js"></script>
+    <script>
+        if (window.AnalysisApp && window.AnalysisPlotly) {
+            window.AnalysisApp.plotlyConfig = window.AnalysisPlotly.config;
+        }
+    </script>
+    <script src="/analysis-prelim-tabs.js"></script>
+    <script src="/analysis-prelim-metodos.js"></script>
+    <script src="/analysis-preliminares.js"></script>
+    <script src="/analysis-descriptivo.js"></script>
+    <script src="/analysis-inferencial.js"></script>
+    <script src="/analysis-inferencial-chisq.js"></script>
+    <script src="/analysis-inferencial-regression.js"></script>
+    <script src="/analysis-inferencial-ancova.js"></script>
+    <script src="/analysis-avanzado.js"></script>
+    <script src="/analysis-avanzado-pca.js"></script>
+    <script src="/analysis-avanzado-mediation.js"></script>
+    <script src="/analysis-fetal.js"></script>
+    <script src="/analysis-fetal-iap.js"></script>
+    <script src="/analysis-fetal-compare.js"></script>
+    <script src="/analysis-fetal-correlate.js"></script>
+    <script src="/analysis-fetal-lasso.js"></script>
+    <script src="/analysis-fetal-tree.js"></script>
+    <script src="/analysis-generales.js"></script>
+
+    <footer class="site-footer">
+        <div class="footer-section">
+            <h4>Directores de Investigación</h4>
+            <p>Dr. Rodrigo Romero Nava</p>
+            <p>Dra. Karla Aidee Aguayo Cerón</p>
+        </div>
+        <div class="footer-divider"></div>
+        <div class="footer-section">
+            <h4>Estudiante</h4>
+            <p>MsC. Julio Jesús Garcia Coste</p>
+        </div>
+        <div class="footer-divider"></div>
+        <div class="footer-section">
+            <p class="footer-copy">© 2026 All rights reserved</p>
+            <p class="footer-copy">Desarrollado por: Julio Jesús Garcia Coste</p>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,591 @@
+/* Programación fetal / IAP */
+
+.analysis-fetal-panel {
+    max-width: 1100px;
+}
+
+.analysis-fetal-intro {
+    color: #475569;
+    font-size: 0.95rem;
+    line-height: 1.55;
+    margin: 0 0 16px;
+}
+
+.analysis-fetal-subtabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 0 0 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+.analysis-fetal-subtab {
+    padding: 9px 14px;
+    border-radius: 999px;
+    border: 1px solid transparent;
+    background: transparent;
+    color: #64748b;
+    font-size: 0.84rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.analysis-fetal-subtab.active {
+    background: #fff7ed;
+    border-color: #fdba74;
+    color: #9a3412;
+}
+
+.analysis-fetal-submodule {
+    display: none;
+}
+
+.analysis-fetal-submodule.active {
+    display: block;
+}
+
+.analysis-fetal-subintro {
+    margin: 0 0 16px;
+    padding: 10px 14px;
+    background: #fff7ed;
+    border-left: 3px solid #ea580c;
+    border-radius: 0 8px 8px 0;
+    font-size: 0.9rem;
+    color: #475569;
+}
+
+.analysis-fetal-iap-definition {
+    line-height: 1.55;
+}
+
+.analysis-fetal-iap-definition p {
+    margin: 0 0 10px;
+}
+
+.analysis-fetal-iap-def-title {
+    margin: 0 0 8px;
+    font-size: 1rem;
+    color: #9a3412;
+}
+
+.analysis-fetal-iap-def-short {
+    margin: 0 0 10px;
+    color: #0f172a;
+}
+
+.analysis-fetal-iap-def-preview {
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px dashed #fdba74;
+    font-size: 0.88rem;
+}
+
+.analysis-fetal-comp-heading {
+    margin: 0 0 8px;
+    font-size: 0.9rem;
+    color: #334155;
+}
+
+.analysis-fetal-iap-result-def {
+    margin-bottom: 14px;
+    padding: 12px 14px;
+    background: #f0f9ff;
+    border: 1px solid #bae6fd;
+    border-radius: 8px;
+}
+
+.analysis-fetal-iap-result-lead {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: #0f172a;
+}
+
+.analysis-fetal-chart-caption {
+    font-size: 0.88rem;
+    color: #64748b;
+}
+
+.analysis-fetal-compare-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin: 12px 0 8px;
+}
+
+.analysis-fetal-compare-label {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: #334155;
+}
+
+.analysis-fetal-compare-label select {
+    min-width: 220px;
+    font-weight: 400;
+}
+
+.analysis-fetal-interpret-panel {
+    margin: 18px 0;
+    padding: 14px 16px;
+    background: #f8fafc;
+    border: 1px solid #cbd5e1;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    color: #475569;
+    line-height: 1.55;
+}
+
+.analysis-fetal-interpret-panel h4 {
+    margin: 0 0 10px;
+    font-size: 0.95rem;
+    color: #0f172a;
+}
+
+.analysis-fetal-interpret-panel ul {
+    margin: 0;
+    padding-left: 1.2rem;
+}
+
+.analysis-fetal-interpret-panel li {
+    margin-bottom: 8px;
+}
+
+.analysis-fetal-interpret-panel li:last-child {
+    margin-bottom: 0;
+}
+
+.analysis-fetal-interpret-extra {
+    margin: 12px 0 0;
+    padding-top: 10px;
+    border-top: 1px dashed #cbd5e1;
+    font-size: 0.88rem;
+}
+
+.analysis-fetal-lasso-interpret {
+    margin-top: 24px;
+    padding: 16px 18px;
+    background: #fff7ed;
+    border: 1px solid #fed7aa;
+    border-radius: 10px;
+}
+
+.analysis-fetal-lasso-what {
+    margin-bottom: 12px;
+    padding: 10px 12px;
+    background: #fff;
+    border-radius: 8px;
+    border-left: 3px solid #ea580c;
+}
+
+.analysis-fetal-lasso-what p {
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.55;
+    color: #334155;
+}
+
+.analysis-fetal-lasso-interpret-bullets {
+    margin: 0 0 14px;
+    padding-left: 1.25rem;
+    font-size: 0.88rem;
+    color: #475569;
+    line-height: 1.5;
+}
+
+.analysis-fetal-lasso-interpret-bullets li {
+    margin-bottom: 6px;
+}
+
+.analysis-fetal-interpret-para {
+    margin: 0 0 10px;
+    font-size: 0.9rem;
+    line-height: 1.55;
+    color: #475569;
+}
+
+.analysis-fetal-interpret-para:last-child {
+    margin-bottom: 0;
+}
+
+.analysis-fetal-step {
+    margin-top: 8px;
+}
+
+.analysis-fetal-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 16px;
+}
+
+.analysis-fetal-insight {
+    margin: 18px 0;
+    padding: 14px 16px;
+    background: #fff7ed;
+    border: 1px solid #fed7aa;
+    border-radius: 10px;
+}
+
+.analysis-fetal-insight h4 {
+    margin: 0 0 8px;
+    color: #9a3412;
+}
+
+.analysis-fetal-chart {
+    min-height: 300px;
+    margin: 16px 0;
+}
+
+.analysis-fetal-corr-matrix {
+    min-height: 340px;
+    margin: 12px 0 20px;
+}
+
+.analysis-fetal-components {
+    display: grid;
+    gap: 8px;
+    margin: 12px 0;
+}
+
+.analysis-fetal-comp-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 8px 10px;
+    background: #f8fafc;
+    border-radius: 8px;
+    font-size: 0.86rem;
+}
+
+.analysis-fetal-comp-row.unavailable {
+    opacity: 0.55;
+}
+
+.analysis-fetal-lasso-guide {
+    margin: 0 0 16px;
+}
+
+.analysis-fetal-lasso-vars {
+    margin: 0 0 20px;
+    padding: 14px 16px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+}
+
+.analysis-fetal-lasso-vars-heading {
+    margin: 0 0 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #0f172a;
+}
+
+.analysis-fetal-lasso-presets {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 12px 0 16px;
+}
+
+.analysis-fetal-preset-option {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 12px;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.88rem;
+    color: #334155;
+    line-height: 1.45;
+}
+
+.analysis-fetal-preset-option:hover {
+    border-color: #fdba74;
+    background: #fff7ed;
+}
+
+.analysis-fetal-preset-option input {
+    margin-top: 3px;
+    flex-shrink: 0;
+    accent-color: #ea580c;
+}
+
+.analysis-fetal-preset-option.is-active {
+    border-color: #ea580c;
+    background: #fff7ed;
+}
+
+.analysis-fetal-preset-option strong {
+    display: block;
+    color: #9a3412;
+    margin-bottom: 2px;
+}
+
+.analysis-fetal-preset-meta {
+    font-size: 0.8rem;
+    color: #64748b;
+}
+
+.analysis-fetal-lasso-multiselect-label {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: #334155;
+}
+
+.analysis-fetal-lasso-multiselect {
+    min-height: 140px;
+    width: 100%;
+    max-width: 520px;
+}
+
+.analysis-fetal-guide-item {
+    margin-bottom: 8px;
+    padding: 10px 12px;
+    background: #f8fafc;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+}
+
+.analysis-fetal-guide-item summary {
+    cursor: pointer;
+    font-weight: 600;
+    color: #9a3412;
+}
+
+.analysis-fetal-guide-item p {
+    margin: 10px 0 0;
+    font-size: 0.88rem;
+    color: #475569;
+    line-height: 1.55;
+}
+
+.analysis-fetal-results-block {
+    margin: 20px 0;
+}
+
+.analysis-fetal-results-heading {
+    margin: 0 0 10px;
+    color: #9a3412;
+    font-size: 1rem;
+}
+
+.analysis-fetal-note {
+    font-size: 0.88rem;
+    color: #64748b;
+    line-height: 1.5;
+    margin: 6px 0;
+}
+
+.analysis-fetal-role-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 600;
+}
+
+.analysis-fetal-role-badge.risk {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.analysis-fetal-role-badge.protect {
+    background: #dbeafe;
+    color: #1e40af;
+}
+
+.analysis-fetal-role-badge.neutral {
+    background: #f1f5f9;
+    color: #475569;
+}
+
+.analysis-fetal-role-badge.muted {
+    background: #f8fafc;
+    color: #94a3b8;
+}
+
+.analysis-fetal-forest {
+    min-height: 320px;
+}
+
+.analysis-fetal-dtree-wrap {
+    overflow-x: auto;
+    padding: 16px 8px 24px;
+    background: #fafafa;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+}
+
+.analysis-fetal-dtree,
+.analysis-fetal-dtree ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+.analysis-fetal-dtree > li {
+    display: inline-block;
+}
+
+.analysis-fetal-dtree-split {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.analysis-fetal-dtree-branches {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    margin-top: 12px;
+    padding-top: 12px;
+    position: relative;
+}
+
+.analysis-fetal-dtree-branches::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 20%;
+    right: 20%;
+    height: 2px;
+    background: #cbd5e1;
+}
+
+.analysis-fetal-dtree-branch {
+    flex: 1;
+    min-width: 140px;
+    max-width: 280px;
+}
+
+.analysis-fetal-dtree-edge {
+    display: block;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #9a3412;
+    margin-bottom: 8px;
+}
+
+.analysis-fetal-dtree-box {
+    display: inline-block;
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 2px solid #fdba74;
+    background: #fff;
+    min-width: 120px;
+    max-width: 220px;
+}
+
+.analysis-fetal-dtree-box.split {
+    border-color: #ea580c;
+    background: #fff7ed;
+}
+
+.analysis-fetal-dtree-box.leaf {
+    background: #fff;
+}
+
+.analysis-fetal-dtree-q {
+    display: block;
+    font-weight: 600;
+    font-size: 0.86rem;
+    color: #9a3412;
+}
+
+.analysis-fetal-dtree-meta {
+    display: block;
+    font-size: 0.75rem;
+    color: #64748b;
+    margin-top: 4px;
+}
+
+.analysis-fetal-dtree-probs {
+    display: block;
+    font-size: 0.72rem;
+    color: #475569;
+    margin-top: 4px;
+}
+
+.analysis-fetal-rules-list {
+    display: grid;
+    gap: 10px;
+}
+
+.analysis-fetal-rule-card {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 12px 14px;
+    background: #f8fafc;
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+}
+
+.analysis-fetal-rule-card.highlight {
+    background: #fff7ed;
+    border-color: #fdba74;
+}
+
+.analysis-fetal-rule-num {
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    line-height: 28px;
+    text-align: center;
+    border-radius: 50%;
+    background: #ea580c;
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.85rem;
+}
+
+.analysis-fetal-rule-card p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #334155;
+}
+
+.analysis-fetal-tree-text {
+    font-size: 0.78rem;
+    line-height: 1.45;
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 14px;
+    border-radius: 10px;
+    overflow-x: auto;
+    white-space: pre-wrap;
+}
+
+.analysis-fetal-tree-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: flex-end;
+    margin: 12px 0 16px;
+}
+
+.analysis-fetal-tree-controls label {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: #475569;
+}
+
+.analysis-fetal-tree-controls select {
+    min-width: 280px;
+    padding: 8px 36px 8px 10px;
+    border-radius: 8px;
+    border: 1px solid #cbd5e1;
+    font-size: 0.88rem;
+}

@@ -1,0 +1,512 @@
+/* Módulo BANPE — estilos propios (evitar crecer style.css / script.js) */
+
+.banpe-section {
+    margin-bottom: 25px;
+}
+
+.banpe-root {
+    padding: 8px 4px 4px;
+}
+
+/* Etiquetas de estado (antropometría / lipídico / HC / BANPE) en lista BANPE */
+.banpe-patient-status .banpe-status-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.88rem;
+    color: #334155;
+}
+
+.banpe-patient-status p {
+    margin: 2px 0;
+}
+
+/* BANPE guardado: etiqueta en azul (lista de pacientes) */
+.banpe-patient-status .banpe-status-tag--banpe-ok {
+    color: #1e40af;
+    font-weight: 600;
+}
+
+.banpe-patient-status .banpe-status-tag--banpe-ok i {
+    color: #2563eb;
+}
+
+/* Panel de registro BANPE */
+.banpe-registration-panel {
+    margin-top: 12px;
+    padding-top: 8px;
+    border-top: 1px solid #e2e8f0;
+}
+
+.banpe-reg-toolbar {
+    margin-bottom: 16px;
+}
+
+.banpe-reg-toolbar--split {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.banpe-reg-toolbar-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+}
+
+.banpe-reg-section {
+    margin-bottom: 22px;
+    padding: 16px 18px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+}
+
+.banpe-reg-section h5 {
+    margin: 0 0 14px 0;
+    font-size: 1.05rem;
+    color: #1e293b;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.banpe-reg-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px 18px;
+}
+
+.banpe-reg-grid .form-group.full-width {
+    grid-column: 1 / -1;
+}
+
+.banpe-reg-section--table {
+    background: #fff;
+}
+
+.banpe-table-hint {
+    margin: 0 0 12px 0;
+    font-size: 0.88rem;
+    color: #64748b;
+}
+
+.banpe-scoring-table-mount {
+    overflow-x: auto;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+}
+
+.banpe-scoring-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+    min-width: 880px;
+}
+
+.banpe-scoring-table th,
+.banpe-scoring-table td {
+    border: 1px solid #e2e8f0;
+    padding: 8px 10px;
+    vertical-align: middle;
+}
+
+.banpe-scoring-table thead th {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: #fff;
+    font-weight: 600;
+    text-align: center;
+}
+
+.banpe-th-area {
+    width: 18%;
+    text-align: left;
+}
+
+.banpe-th-sub {
+    width: 34%;
+    text-align: left;
+}
+
+.banpe-th-pun-main {
+    text-align: center;
+}
+
+.banpe-th-subpun {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.banpe-td-area {
+    font-weight: 600;
+    color: #334155;
+    background: #f1f5f9;
+    vertical-align: top;
+}
+
+.banpe-td-sub {
+    color: #1e293b;
+}
+
+.banpe-td-num {
+    width: 10%;
+    text-align: center;
+    padding: 4px 6px !important;
+}
+
+.banpe-score-input {
+    width: 100%;
+    max-width: 100px;
+    margin: 0 auto;
+    display: block;
+    padding: 6px 8px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    font-size: 0.88rem;
+    text-align: center;
+}
+
+.banpe-cod-input-disabled {
+    background: #e2e8f0;
+    color: #64748b;
+    cursor: not-allowed;
+    opacity: 0.85;
+}
+
+.banpe-tr-total {
+    background: #eef2ff;
+    font-weight: 600;
+}
+
+.banpe-tr-total .banpe-td-sub {
+    color: #3730a3;
+}
+
+.banpe-total-sum-input {
+    background: #e0e7ff;
+    color: #312e81;
+    cursor: default;
+    font-weight: 600;
+}
+
+.banpe-total-sum-input::placeholder {
+    color: #6366f1;
+    font-weight: 500;
+    font-size: 0.72rem;
+    opacity: 0.9;
+}
+
+.banpe-td-norm-area {
+    vertical-align: middle;
+    background: #f8fafc;
+    min-width: 92px;
+}
+
+.banpe-norm-area-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 6px 4px;
+    min-height: 56px;
+}
+
+.banpe-norm-performance {
+    margin: 0;
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-align: center;
+    line-height: 1.3;
+    color: #1e293b;
+    max-width: 120px;
+    min-height: 1.3em;
+}
+
+.banpe-norm-area-input {
+    max-width: 112px;
+}
+
+.banpe-norm-auto {
+    background: #f1f5f9 !important;
+    cursor: default;
+    color: #0f172a;
+}
+
+.banpe-norm-low {
+    background-color: #fecaca !important;
+    border-color: #f87171 !important;
+    color: #7f1d1d;
+}
+
+.banpe-norm-leve {
+    background-color: #fef08a !important;
+    border-color: #facc15 !important;
+    color: #854d0e;
+}
+
+.banpe-norm-mid {
+    background-color: #bbf7d0 !important;
+    border-color: #34d399 !important;
+    color: #14532d;
+}
+
+.banpe-norm-high {
+    background-color: #bfdbfe !important;
+    border-color: #60a5fa !important;
+    color: #1e3a8a;
+}
+
+/* Modal editor tablas normalización BANPE */
+.banpe-norm-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 10050;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    box-sizing: border-box;
+}
+
+.banpe-norm-modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.55);
+}
+
+.banpe-norm-modal-dialog {
+    position: relative;
+    z-index: 1;
+    width: min(1200px, 96vw);
+    max-height: min(92vh, 900px);
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.banpe-norm-modal-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px 18px;
+    border-bottom: 1px solid #e2e8f0;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: #fff;
+}
+
+.banpe-norm-modal-header h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.banpe-norm-modal-header-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+}
+
+.banpe-norm-modal-hint {
+    font-size: 0.78rem;
+    opacity: 0.95;
+    min-width: 120px;
+    text-align: right;
+}
+
+.banpe-norm-modal-intro {
+    margin: 0;
+    padding: 10px 18px;
+    font-size: 0.85rem;
+    color: #475569;
+    background: #f8fafc;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.banpe-norm-modal-body {
+    overflow: auto;
+    padding: 14px 18px 20px;
+    flex: 1;
+}
+
+.banpe-norm-modal-error {
+    color: #b91c1c;
+    padding: 12px;
+}
+
+.banpe-norm-edit-section {
+    margin-bottom: 28px;
+}
+
+.banpe-norm-edit-section h4 {
+    margin: 0 0 10px 0;
+    font-size: 1rem;
+    color: #1e293b;
+}
+
+.banpe-norm-edit-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.82rem;
+    margin-bottom: 8px;
+}
+
+.banpe-norm-edit-table th,
+.banpe-norm-edit-table td {
+    border: 1px solid #e2e8f0;
+    padding: 4px 6px;
+    text-align: center;
+}
+
+.banpe-norm-edit-table th {
+    background: #eef2ff;
+    font-weight: 600;
+    color: #3730a3;
+}
+
+.banpe-norm-edit-idx {
+    font-weight: 600;
+    background: #f1f5f9;
+    color: #334155;
+}
+
+.banpe-norm-cell-input {
+    width: 100%;
+    max-width: 88px;
+    margin: 0 auto;
+    display: block;
+    padding: 4px 6px;
+    border: 1px solid #cbd5e1;
+    border-radius: 4px;
+    text-align: center;
+    font-size: 0.82rem;
+}
+
+.banpe-cod-edit-table .banpe-cod-th-label,
+.banpe-cod-edit-table .banpe-cod-td-label {
+    text-align: left;
+    min-width: 220px;
+    max-width: 340px;
+    white-space: normal;
+    font-weight: 600;
+    color: #334155;
+}
+
+.banpe-cod-cell-input {
+    width: 100%;
+    min-width: 72px;
+    max-width: 120px;
+    margin: 0 auto;
+    display: block;
+    padding: 5px 7px;
+    border: 1px solid #cbd5e1;
+    border-radius: 4px;
+    text-align: center;
+    font-size: 0.8rem;
+}
+
+.banpe-reg-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: 8px;
+}
+
+/* Modal Performance BANPE — pantalla completa */
+.banpe-perf-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 10060;
+    display: none;
+    flex-direction: column;
+    background: #f1f5f9;
+    box-sizing: border-box;
+}
+
+.banpe-perf-header {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 18px;
+    background: linear-gradient(135deg, #334155, #1e293b);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.banpe-perf-header h3 {
+    margin: 0;
+    font-size: 1.15rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.banpe-perf-body {
+    flex: 1;
+    min-height: 0;
+    overflow: auto;
+    padding: 12px 16px 20px;
+}
+
+.banpe-perf-scroll {
+    overflow-x: auto;
+    overflow-y: visible;
+    padding-bottom: 8px;
+}
+
+.banpe-perf-chart {
+    display: block;
+    min-width: min(100%, 720px);
+}
+
+.banpe-perf-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px 24px;
+    margin-bottom: 12px;
+    padding: 10px 12px;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    color: #334155;
+}
+
+.banpe-perf-legend span {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.banpe-perf-legend i {
+    width: 22px;
+    height: 4px;
+    border-radius: 2px;
+    display: inline-block;
+}
+
+.banpe-perf-hint {
+    margin: 0 0 10px 0;
+    font-size: 0.88rem;
+    color: #64748b;
+    max-width: 960px;
+}
+
+@media (max-width: 768px) {
+    .banpe-reg-grid {
+        grid-template-columns: 1fr;
+    }
+}

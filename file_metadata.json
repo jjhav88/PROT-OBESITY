@@ -1,0 +1,71 @@
+[
+  {
+    "id": "ff43b200-a435-439e-846f-5a6a260b09e7",
+    "original_filename": "up-BASE DE DATOS PROTOCLO OBESIDAD NIÑOS.xlsx",
+    "processed_filename": "updated_up-BASE DE DATOS PROTOCLO OBESIDAD NIÑOS.xlsx",
+    "rows": 35,
+    "columns": [
+      "Folio",
+      "Nombre",
+      "Edad",
+      "Sexo",
+      "Tutor",
+      "Contacto",
+      "Fecha historia clínica",
+      "Horario ",
+      "ID_Unico"
+    ],
+    "created_at": "2025-10-27T13:24:07.809056",
+    "file_path": "D:\\Julio\\DIM\\2nd S\\RECLUTAMIENTO\\app id observaciones\\randomID\\uploads\\updated_up-BASE DE DATOS PROTOCLO OBESIDAD NIÑOS.xlsx",
+    "last_updated": "2026-07-12T22:21:52.018020",
+    "anthropometric_measurements": 30,
+    "lipid_profiles": 30,
+    "hc_columns_cleaned": true
+  },
+  {
+    "id": "05b45fd4-8ffd-47d6-a360-0993eade9506",
+    "original_filename": "up-2-BASE DE DATOS PROTOCLO OBESIDAD NIÑOS .xlsx",
+    "processed_filename": "updated_up-2-BASE DE DATOS PROTOCLO OBESIDAD NIÑOS .xlsx",
+    "rows": 3,
+    "columns": [
+      "Folio",
+      "Nombre",
+      "Edad",
+      "Sexo",
+      "Tutor",
+      "Contacto",
+      "Fecha historia clínica",
+      "Horario ",
+      "ID_Unico"
+    ],
+    "created_at": "2025-11-13T12:27:25.513406",
+    "file_path": "D:\\Julio\\DIM\\2nd S\\RECLUTAMIENTO\\app id observaciones\\randomID\\uploads\\updated_up-2-BASE DE DATOS PROTOCLO OBESIDAD NIÑOS .xlsx",
+    "last_updated": "2026-07-12T21:21:17.340125",
+    "anthropometric_measurements": 3,
+    "lipid_profiles": 3,
+    "hc_columns_cleaned": true
+  },
+  {
+    "id": "2cd90c4d-a0df-4df4-aa99-01cb489d73f1",
+    "original_filename": "BD-REAL PARA PRUEBAS DE SOFTWARE.xlsx",
+    "processed_filename": "updated_BD-REAL PARA PRUEBAS DE SOFTWARE.xlsx",
+    "rows": 35,
+    "columns": [
+      "Folio",
+      "Nombre",
+      "Edad",
+      "Sexo",
+      "Tutor",
+      "Contacto",
+      "Fecha historia clínica",
+      "Horario ",
+      "ID_Unico"
+    ],
+    "created_at": "2025-11-13T16:19:38.472609",
+    "file_path": "D:\\Julio\\DIM\\2nd S\\RECLUTAMIENTO\\app id observaciones\\randomID\\uploads\\updated_BD-REAL PARA PRUEBAS DE SOFTWARE.xlsx",
+    "last_updated": "2026-05-30T10:33:53.302808",
+    "anthropometric_measurements": 2,
+    "lipid_profiles": 1,
+    "hc_columns_cleaned": true
+  }
+]

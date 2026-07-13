@@ -1,0 +1,20 @@
+/* Módulo ENI-2 — estilos propios (evitar crecer style.css / script.js) */
+
+.eni2-section {
+    margin-bottom: 25px;
+}
+
+.eni2-root {
+    padding: 8px 4px 4px;
+}
+
+.eni2-placeholder {
+    margin: 0;
+    padding: 14px 16px;
+    background: #f8fafc;
+    border: 1px dashed #cbd5e1;
+    border-radius: 10px;
+    color: #475569;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}

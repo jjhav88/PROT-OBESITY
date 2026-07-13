@@ -1,0 +1,208 @@
+<!-- Módulo de Historia Clínica -->
+<div id="hc-section" class="hc-section">
+    <div class="hc-card">
+        <div class="hc-header">
+            <h3><i class="fas fa-file-medical"></i> Historia Clínica</h3>
+            <p>Registra la información completa de la historia clínica de los pacientes</p>
+            <button type="button" class="btn btn-primary" onclick="toggleHCExpander()">
+                <i class="fas fa-chevron-down"></i>
+            </button>
+        </div>
+        
+        <div id="hcExpanderContent" class="hc-content" style="display: none;">
+            <!-- Selector de Base de Datos -->
+            <div id="hcDatabaseSelector" class="hc-database-selector">
+                <h4><i class="fas fa-database"></i> Seleccionar Base de Datos</h4>
+                <div id="hcDatabaseList" class="database-list">
+                    <!-- Las bases de datos se cargarán aquí dinámicamente -->
+                </div>
+            </div>
+            
+            <!-- Selector de Pacientes -->
+            <div id="hcPatientSelector" class="hc-patient-selector" style="display: none;">
+                <div class="patient-selector-header">
+                    <h4><i class="fas fa-user"></i> Seleccionar Paciente</h4>
+                    <div class="patient-search-container">
+                        <input type="text" id="hcPatientSearch" placeholder="Buscar por ID de paciente..." onkeyup="filterHCPatients()">
+                    </div>
+                    <div class="patient-actions">
+                        <button type="button" class="btn btn-secondary" onclick="changeHCDatabase()">
+                            <i class="fas fa-exchange-alt"></i> Cambiar Base de Datos
+                        </button>
+                        <button type="button" class="btn btn-info" onclick="downloadHCTemplate()">
+                            <i class="fas fa-download"></i> Descargar Plantilla
+                        </button>
+                    </div>
+                </div>
+                <div id="hcPatientList" class="patient-list">
+                    <!-- La lista de pacientes se cargará aquí dinámicamente -->
+                </div>
+            </div>
+            
+            <!-- Formulario de Historia Clínica -->
+            <div id="hcForm" class="hc-form" style="display: none;">
+                <div class="hc-form-header">
+                    <h4><i class="fas fa-file-medical"></i> Historia Clínica - <span id="hcPatientInfo"></span></h4>
+                    <button type="button" class="btn btn-secondary" onclick="selectAnotherHCPatient()">
+                        <i class="fas fa-arrow-left"></i> Seleccionar Otro Paciente
+                    </button>
+                </div>
+                
+                <!-- Sistema de Tabs para las secciones -->
+                <div class="hc-tabs">
+                    <div class="hc-tab-nav">
+                        <button class="hc-tab-btn active" onclick="showHCTab('patient-data')">
+                            <i class="fas fa-user"></i> Datos del Paciente
+                        </button>
+                        <button class="hc-tab-btn" onclick="showHCTab('medical-history')">
+                            <i class="fas fa-history"></i> Antecedentes Médicos
+                        </button>
+                        <button class="hc-tab-btn" onclick="showHCTab('current-condition')">
+                            <i class="fas fa-stethoscope"></i> Padecimiento Actual
+                        </button>
+                        <button class="hc-tab-btn" onclick="showHCTab('physical-exam')">
+                            <i class="fas fa-heartbeat"></i> Exploración Física
+                        </button>
+                        <button class="hc-tab-btn" onclick="showHCTab('diagnosis')">
+                            <i class="fas fa-clipboard-check"></i> Diagnóstico
+                        </button>
+                        <button class="hc-tab-btn" onclick="showHCTab('treatment')">
+                            <i class="fas fa-pills"></i> Tratamiento
+                        </button>
+                    </div>
+                    
+                    <!-- Tab 1: Datos del Paciente -->
+                    <div id="patient-data-tab" class="hc-tab-content active">
+                        <div class="hc-section-header">
+                            <h5><i class="fas fa-user"></i> Datos del Paciente</h5>
+                            <p>Información personal y de contacto del paciente</p>
+                        </div>
+                        
+                        <div class="hc-form-grid">
+                            <div class="form-group">
+                                <label for="hcNombrePaciente">Nombre del Paciente:</label>
+                                <input type="text" id="hcNombrePaciente" placeholder="Nombre(s) Apellido Paterno Apellido Materno">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="hcNSS">Número de Seguro Social (NSS):</label>
+                                <input type="text" id="hcNSS" placeholder="Ingrese el NSS">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="hcIdPaciente">ID_Paciente:</label>
+                                <input type="text" id="hcIdPaciente" readonly>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="hcFechaNacimiento">Fecha de Nacimiento:</label>
+                                <input type="date" id="hcFechaNacimiento">
+                            </div>
+                            
+                            <div class="form-group full-width">
+                                <label for="hcDomicilioPrincipal">Domicilio Principal:</label>
+                                <textarea id="hcDomicilioPrincipal" rows="2" placeholder="Calle, número, colonia, ciudad, estado, código postal"></textarea>
+                            </div>
+                            
+                            <div class="form-group full-width">
+                                <label for="hcDomicilioAlterno">Domicilio Alterno:</label>
+                                <textarea id="hcDomicilioAlterno" rows="2" placeholder="Calle, número, colonia, ciudad, estado, código postal"></textarea>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="hcNombreFamiliar">Nombre del Familiar Responsable:</label>
+                                <input type="text" id="hcNombreFamiliar" placeholder="Nombre(s) Apellido Paterno Apellido Materno">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="hcTelefono">Teléfono:</label>
+                                <input type="tel" id="hcTelefono" placeholder="(000) 000-0000">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="hcCelular">Celular:</label>
+                                <input type="tel" id="hcCelular" placeholder="(000) 000-0000">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="hcCorreo">Correo Electrónico:</label>
+                                <input type="email" id="hcCorreo" placeholder="correo@ejemplo.com">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="hcRealizoHC">Realizó Historia Clínica:</label>
+                                <input type="text" id="hcRealizoHC" placeholder="Nombre(s) Apellido Paterno Apellido Materno">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="hcFirmaMPSS">Firma del MPSS:</label>
+                                <input type="text" id="hcFirmaMPSS" placeholder="________________________________">
+                            </div>
+                        </div>
+                        
+                        <div class="hc-form-actions">
+                            <button type="button" class="btn btn-success" onclick="saveHCPatientData()">
+                                <i class="fas fa-save"></i> Guardar Datos del Paciente
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Tab 2: Antecedentes Médicos -->
+                    <div id="medical-history-tab" class="hc-tab-content">
+                        <div class="hc-section-header">
+                            <h5><i class="fas fa-history"></i> Antecedentes Médicos</h5>
+                            <p>Historial médico del paciente</p>
+                        </div>
+                        <div class="hc-placeholder">
+                            <p><i class="fas fa-construction"></i> Esta sección estará disponible próximamente</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Tab 3: Padecimiento Actual -->
+                    <div id="current-condition-tab" class="hc-tab-content">
+                        <div class="hc-section-header">
+                            <h5><i class="fas fa-stethoscope"></i> Padecimiento Actual</h5>
+                            <p>Descripción del padecimiento actual</p>
+                        </div>
+                        <div class="hc-placeholder">
+                            <p><i class="fas fa-construction"></i> Esta sección estará disponible próximamente</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Tab 4: Exploración Física -->
+                    <div id="physical-exam-tab" class="hc-tab-content">
+                        <div class="hc-section-header">
+                            <h5><i class="fas fa-heartbeat"></i> Exploración Física</h5>
+                            <p>Resultados de la exploración física</p>
+                        </div>
+                        <div class="hc-placeholder">
+                            <p><i class="fas fa-construction"></i> Esta sección estará disponible próximamente</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Tab 5: Diagnóstico -->
+                    <div id="diagnosis-tab" class="hc-tab-content">
+                        <div class="hc-section-header">
+                            <h5><i class="fas fa-clipboard-check"></i> Diagnóstico</h5>
+                            <p>Diagnóstico médico del paciente</p>
+                        </div>
+                        <div class="hc-placeholder">
+                            <p><i class="fas fa-construction"></i> Esta sección estará disponible próximamente</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Tab 6: Tratamiento -->
+                    <div id="treatment-tab" class="hc-tab-content">
+                        <div class="hc-section-header">
+                            <h5><i class="fas fa-pills"></i> Tratamiento</h5>
+                            <p>Plan de tratamiento del paciente</p>
+                        </div>
+                        <div class="hc-placeholder">
+                            <p><i class="fas fa-construction"></i> Esta sección estará disponible próximamente</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

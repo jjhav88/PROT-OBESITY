@@ -1,0 +1,233 @@
+
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Rotulados para Tubos de Ensayo</title>
+        <style>
+            @page {
+                size: A4;
+                margin: 10mm;
+            }
+            
+            body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 0;
+                background: white;
+            }
+            
+            .labels-container {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 2mm;
+                max-width: 190mm;
+                margin: 0 auto;
+            }
+            
+            .label {
+                width: 60mm;
+                height: 15mm;
+                border: 0.3mm solid #000;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                text-align: center;
+                position: relative;
+                page-break-inside: avoid;
+                background: white;
+            }
+            
+            .label::before {
+                content: '';
+                position: absolute;
+                top: -0.5mm;
+                left: -0.5mm;
+                right: -0.5mm;
+                bottom: -0.5mm;
+                border: 0.2mm dashed #ccc;
+                pointer-events: none;
+            }
+            
+            .protocol {
+                font-size: 6pt;
+                font-weight: bold;
+                line-height: 1;
+                margin-bottom: 1mm;
+            }
+            
+            .patient-id {
+                font-size: 8pt;
+                font-weight: bold;
+                line-height: 1;
+            }
+            
+            @media print {
+                body { margin: 0; padding: 0; }
+                .labels-container { gap: 1mm; }
+                .label { 
+                    width: 60mm; 
+                    height: 15mm;
+                    border: 0.3mm solid #000;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="labels-container">
+    
+            <div class="label">
+                <div class="protocol">Protocolo de Investigación ESM-IPN</div>
+                <div class="patient-id">ID_Paciente: X2GV</div>
+            </div>
+        
+            <div class="label">
+                <div class="protocol">Protocolo de Investigación ESM-IPN</div>
+                <div class="patient-id">ID_Paciente: 9MBR</div>
+            </div>
+        
+            <div class="label">
+                <div class="protocol">Protocolo de Investigación ESM-IPN</div>
+                <div class="patient-id">ID_Paciente: P1NT</div>
+            </div>
+        
+            <div class="label">
+                <div class="protocol">Protocolo de Investigación ESM-IPN</div>
+                <div class="patient-id">ID_Paciente: 6M3V</div>
+            </div>
+        
+            <div class="label">
+                <div class="protocol">Protocolo de Investigación ESM-IPN</div>
+                <div class="patient-id">ID_Paciente: ROY2</div>
+            </div>
+        
+            <div class="label">
+                <div class="protocol">Protocolo de Investigación ESM-IPN</div>
+                <div class="patient-id">ID_Paciente: M1DN</div>
+            </div>
+        
+            <div class="label">
+                <div class="protocol">Protocolo de Investigación ESM-IPN</div>
+                <div class="patient-id">ID_Paciente: SCCF</div>
+            </div>
+        
+            <div class="label">
+                <div class="protocol">Protocolo de Investigación ESM-IPN</div>
+                <div class="patient-id">ID_Paciente: YBI9</div>
+            </div>
+        
+            <div class="label">
+                <div class="protocol">Protocolo de Investigación ESM-IPN</div>
+                <div class="patient-id">ID_Paciente: DMMT</div>
+            </div>
+        
+            <div class="label">
+                <div class="protocol">Protocolo de Investigación ESM-IPN</div>
+                <div class="patient-id">ID_Paciente: TZLU</div>
+            </div>
+        
+            <div class="label">
+                <div class="protocol">Protocolo de Investigación ESM-IPN</div>
+                <div class="patient-id">ID_Paciente: LAQO</div>
+            </div>
+        
+            <div class="label">
+                <div class="protocol">Protocolo de Investigación ESM-IPN</div>
+                <div class="patient-id">ID_Paciente: ELUB</div>
+            </div>
+        
+            <div class="label">
+                <div class="protocol">Protocolo de Investigación ESM-IPN</div>
+                <div class="patient-id">ID_Paciente: AIJR</div>
+            </div>
+        
+            <div class="label">
+                <div class="protocol">Protocolo de Investigación ESM-IPN</div>
+                <div class="patient-id">ID_Paciente: FE55</div>
+            </div>
+        
+            <div class="label">
+                <div class="protocol">Protocolo de Investigación ESM-IPN</div>
+                <div class="patient-id">ID_Paciente: 1F9E</div>
+            </div>
+        
+            <div class="label">
+                <div class="protocol">Protocolo de Investigación ESM-IPN</div>
+                <div class="patient-id">ID_Paciente: MYYE</div>
+            </div>
+        
+            <div class="label">
+                <div class="protocol">Protocolo de Investigación ESM-IPN</div>
+                <div class="patient-id">ID_Paciente: NPAA</div>
+            </div>
+        
+            <div class="label">
+                <div class="protocol">Protocolo de Investigación ESM-IPN</div>
+                <div class="patient-id">ID_Paciente: R5UB</div>
+            </div>
+        
+            <div class="label">
+                <div class="protocol">Protocolo de Investigación ESM-IPN</div>
+                <div class="patient-id">ID_Paciente: MR6K</div>
+            </div>
+        
+            <div class="label">
+                <div class="protocol">Protocolo de Investigación ESM-IPN</div>
+                <div class="patient-id">ID_Paciente: LJY5</div>
+            </div>
+        
+            <div class="label">
+                <div class="protocol">Protocolo de Investigación ESM-IPN</div>
+                <div class="patient-id">ID_Paciente: 6E2Q</div>
+            </div>
+        
+            <div class="label">
+                <div class="protocol">Protocolo de Investigación ESM-IPN</div>
+                <div class="patient-id">ID_Paciente: 4MTK</div>
+            </div>
+        
+            <div class="label">
+                <div class="protocol">Protocolo de Investigación ESM-IPN</div>
+                <div class="patient-id">ID_Paciente: OR12</div>
+            </div>
+        
+            <div class="label">
+                <div class="protocol">Protocolo de Investigación ESM-IPN</div>
+                <div class="patient-id">ID_Paciente: ZX6I</div>
+            </div>
+        
+            <div class="label">
+                <div class="protocol">Protocolo de Investigación ESM-IPN</div>
+                <div class="patient-id">ID_Paciente: O8VJ</div>
+            </div>
+        
+            <div class="label">
+                <div class="protocol">Protocolo de Investigación ESM-IPN</div>
+                <div class="patient-id">ID_Paciente: L9JC</div>
+            </div>
+        
+            <div class="label">
+                <div class="protocol">Protocolo de Investigación ESM-IPN</div>
+                <div class="patient-id">ID_Paciente: PJQG</div>
+            </div>
+        
+            <div class="label">
+                <div class="protocol">Protocolo de Investigación ESM-IPN</div>
+                <div class="patient-id">ID_Paciente: GRV2</div>
+            </div>
+        
+            <div class="label">
+                <div class="protocol">Protocolo de Investigación ESM-IPN</div>
+                <div class="patient-id">ID_Paciente: E5TY</div>
+            </div>
+        
+            <div class="label">
+                <div class="protocol">Protocolo de Investigación ESM-IPN</div>
+                <div class="patient-id">ID_Paciente: NF5R</div>
+            </div>
+        
+        </div>
+    </body>
+    </html>
+    
