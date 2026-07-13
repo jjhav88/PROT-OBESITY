@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de usuarios — Protocolo Obesidad y Neurocognición</title>
+    <link rel="stylesheet" href="/static/usuarios.css">
+</head>
+<body>
+    <header class="usr-header">
+        <div class="usr-header-inner">
+            <div>
+                <span class="usr-badge">Panel de administración</span>
+                <h1>Gestión de usuarios</h1>
+            </div>
+            <a class="usr-back" href="/">← Volver a la aplicación</a>
+        </div>
+    </header>
+
+    <main class="usr-main">
+        <section class="usr-card">
+            <h2>Registrar usuario</h2>
+            <p class="usr-hint">Crea cuentas de acceso. El rol define a qué módulos podrá entrar el usuario.</p>
+
+            <form id="usr-form" class="usr-form" novalidate>
+                <div class="usr-field">
+                    <label for="u-username">Nombre de usuario</label>
+                    <input type="text" id="u-username" name="username" required autocomplete="off" placeholder="ej. investigador1">
+                </div>
+
+                <div class="usr-field">
+                    <label for="u-password">Contraseña</label>
+                    <span class="pass-wrap">
+                        <input type="password" id="u-password" name="password" required autocomplete="new-password" placeholder="mínimo 4 caracteres">
+                        <button type="button" class="toggle-pass" id="u-toggle" aria-label="Mostrar contraseña">Ver</button>
+                    </span>
+                </div>
+
+                <div class="usr-field">
+                    <label for="u-role">Rol</label>
+                    <select id="u-role" name="role" required>
+                        <option value="investigador">Investigador (solo módulo Protocolo)</option>
+                        <option value="admin">Admin (acceso total)</option>
+                    </select>
+                </div>
+
+                <p class="usr-msg" id="usr-msg" role="alert" hidden></p>
+
+                <button type="submit" class="usr-btn" id="usr-submit">Registrar usuario</button>
+            </form>
+        </section>
+
+        <section class="usr-card">
+            <h2>Usuarios registrados</h2>
+            <div class="usr-table-wrap">
+                <table class="usr-table">
+                    <thead>
+                        <tr>
+                            <th>Usuario</th>
+                            <th>Rol</th>
+                            <th class="col-actions">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="usr-tbody">
+                        <tr><td colspan="3" class="usr-empty">Cargando…</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <script src="/static/usuarios.js"></script>
+</body>
+</html>

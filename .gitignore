@@ -20,6 +20,7 @@ __pycache__/
 # Variables de entorno / secretos
 .env
 .env.*
+auth_users.json
 
 # Archivos del sistema operativo
 .DS_Store

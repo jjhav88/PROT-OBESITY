@@ -1,6 +1,6 @@
 from fastapi import FastAPI, File, UploadFile, HTTPException, Request
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import HTMLResponse, FileResponse, Response
+from fastapi.responses import HTMLResponse, FileResponse, Response, RedirectResponse, JSONResponse
 import pandas as pd
 import uuid
 import os
@@ -21,6 +21,15 @@ from reportlab.pdfbase.ttfonts import TTFont
 # Importar el módulo de Historia Clínica
 from hc import hc_router
 from analysis_api import analysis_router
+from auth import (
+    auth_router,
+    ensure_seed_admin,
+    get_session_user,
+    is_public_path,
+    is_analysis_path,
+    is_admin_only_path,
+    ROLE_ADMIN,
+)
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, PageBreak, PageTemplate, Frame
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.colors import black
@@ -29,9 +38,43 @@ from io import BytesIO
 
 app = FastAPI(title="Excel ID Generator", description="Aplicación para generar IDs únicos en archivos Excel")
 
+
+@app.middleware("http")
+async def auth_guard(request: Request, call_next):
+    """Protege toda la app y aplica los permisos por rol.
+
+    - Sin sesión: solo login y estáticos; el resto redirige a /login (páginas) o 401 (APIs).
+    - Rol 'investigador': sin acceso al módulo de Análisis de Datos.
+    - Rutas de gestión de usuarios: solo administrador.
+    """
+    path = request.url.path
+    wants_html = "text/html" in request.headers.get("accept", "")
+
+    if is_public_path(path):
+        return await call_next(request)
+
+    user = get_session_user(request)
+    if not user:
+        if wants_html:
+            return RedirectResponse(url="/login")
+        return JSONResponse({"detail": "No autenticado"}, status_code=401)
+
+    is_admin = user.get("role") == ROLE_ADMIN
+    if not is_admin and (is_analysis_path(path) or is_admin_only_path(path)):
+        if wants_html:
+            return RedirectResponse(url="/")
+        return JSONResponse({"detail": "No autorizado"}, status_code=403)
+
+    return await call_next(request)
+
+
 # Incluir el router de Historia Clínica
 app.include_router(hc_router)
 app.include_router(analysis_router)
+app.include_router(auth_router)
+
+# Crear la cuenta de administrador si aún no existe
+ensure_seed_admin()
 
 # Servir archivos estáticos adicionales
 @app.get("/hc.html")

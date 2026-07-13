@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar sesión — Protocolo Obesidad y Neurocognición</title>
+    <link rel="stylesheet" href="/static/login.css">
+</head>
+<body>
+    <div class="login-bg" aria-hidden="true"></div>
+    <div class="login-overlay" aria-hidden="true"></div>
+
+    <main class="login-wrap">
+        <section class="login-card" role="dialog" aria-labelledby="login-title">
+            <div class="login-brand">
+                <span class="login-badge">ESM · IPN</span>
+                <h1 id="login-title">Protocolo de Investigación</h1>
+                <p class="login-sub">Obesidad, Inflamación de bajo grado y Neurocognición</p>
+            </div>
+
+            <form id="login-form" class="login-form" autocomplete="on" novalidate>
+                <label class="field">
+                    <span class="field-label">Usuario o correo</span>
+                    <input type="text" id="username" name="username" required
+                           placeholder="admin" autocomplete="username" autofocus>
+                </label>
+
+                <label class="field">
+                    <span class="field-label">Contraseña</span>
+                    <span class="pass-wrap">
+                        <input type="password" id="password" name="password" required
+                               placeholder="••••••••" autocomplete="current-password">
+                        <button type="button" class="toggle-pass" id="toggle-pass"
+                                aria-label="Mostrar contraseña">Ver</button>
+                    </span>
+                </label>
+
+                <p class="login-error" id="login-error" role="alert" hidden></p>
+
+                <button type="submit" class="login-btn" id="login-btn">
+                    <span class="btn-text">Iniciar sesión</span>
+                    <span class="btn-spinner" aria-hidden="true"></span>
+                </button>
+            </form>
+
+            <p class="login-foot">Acceso restringido al equipo de investigación autorizado.</p>
+        </section>
+    </main>
+
+    <script src="/static/login.js"></script>
+</body>
+</html>
