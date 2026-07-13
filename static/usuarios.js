@@ -8,6 +8,10 @@
     const roleEl = document.getElementById("u-role");
     const togglePass = document.getElementById("u-toggle");
 
+    const auditTbody = document.getElementById("audit-tbody");
+    const auditFilter = document.getElementById("audit-filter");
+    const auditRefresh = document.getElementById("audit-refresh");
+
     let currentUser = null;
 
     const ROLE_LABELS = { admin: "Admin", investigador: "Investigador" };
@@ -69,6 +73,72 @@
             renderUsers(data.users);
         } catch (e) {
             tbody.innerHTML = '<tr><td colspan="3" class="usr-empty">Error al cargar.</td></tr>';
+        }
+    }
+
+    const EVENT_INFO = {
+        login: { label: "Inicio de sesión", cls: "evt-login" },
+        logout: { label: "Cierre de sesión", cls: "evt-logout" },
+        action: { label: "Acción", cls: "evt-action" },
+    };
+
+    function formatDate(ts) {
+        try {
+            return new Date(ts * 1000).toLocaleString("es-MX");
+        } catch (e) {
+            return "";
+        }
+    }
+
+    function formatDuration(seconds) {
+        if (seconds == null) return "—";
+        const s = Math.round(seconds);
+        if (s >= 3600) return Math.floor(s / 3600) + "h " + Math.floor((s % 3600) / 60) + "m";
+        if (s >= 60) return Math.floor(s / 60) + "m " + (s % 60) + "s";
+        return s + "s";
+    }
+
+    function renderAudit(events) {
+        if (!events || events.length === 0) {
+            auditTbody.innerHTML = '<tr><td colspan="5" class="usr-empty">Sin registros.</td></tr>';
+            return;
+        }
+        auditTbody.innerHTML = events.map(function (e) {
+            const info = EVENT_INFO[e.type] || { label: e.type, cls: "evt-action" };
+            let detail = "—";
+            if (e.type === "action") {
+                const status = e.status != null ? e.status : "";
+                const errCls = e.status && e.status >= 400 ? " audit-status-err" : "";
+                detail = '<span class="audit-detail">' + escapeHtml(e.detail || "") +
+                    '</span> <span class="' + errCls.trim() + '">' + escapeHtml(String(status)) + "</span>";
+            } else if (e.detail) {
+                detail = escapeHtml(e.detail);
+            }
+            const duration = e.type === "logout" ? formatDuration(e.duration) : "—";
+            return (
+                "<tr><td>" + escapeHtml(formatDate(e.ts)) + "</td>" +
+                "<td>" + escapeHtml(e.user || "?") + "</td>" +
+                '<td><span class="evt-tag ' + info.cls + '">' + escapeHtml(info.label) + "</span></td>" +
+                "<td>" + detail + "</td>" +
+                "<td>" + escapeHtml(duration) + "</td></tr>"
+            );
+        }).join("");
+    }
+
+    async function loadAudit() {
+        const type = auditFilter.value;
+        auditTbody.innerHTML = '<tr><td colspan="5" class="usr-empty">Cargando…</td></tr>';
+        try {
+            const url = "/api/audit?limit=300" + (type ? "&type=" + encodeURIComponent(type) : "");
+            const res = await fetch(url);
+            if (!res.ok) {
+                auditTbody.innerHTML = '<tr><td colspan="5" class="usr-empty">No autorizado.</td></tr>';
+                return;
+            }
+            const data = await res.json();
+            renderAudit(data.events);
+        } catch (e) {
+            auditTbody.innerHTML = '<tr><td colspan="5" class="usr-empty">Error al cargar.</td></tr>';
         }
     }
 
@@ -140,8 +210,12 @@
         }
     });
 
+    auditRefresh.addEventListener("click", loadAudit);
+    auditFilter.addEventListener("change", loadAudit);
+
     (async function init() {
         await loadMe();
         await loadUsers();
+        await loadAudit();
     })();
 })();

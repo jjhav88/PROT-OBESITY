@@ -15,6 +15,8 @@ import secrets
 from fastapi import APIRouter, Request
 from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse
 
+import audit
+
 AUTH_USERS_FILE = os.path.abspath("auth_users.json")
 SESSION_COOKIE = "sesion"
 SESSION_MAX_AGE = 60 * 60 * 12  # 12 horas
@@ -212,6 +214,8 @@ async def api_login(request: Request):
             {"ok": False, "error": "Usuario o contraseña incorrectos."},
             status_code=401,
         )
+    user["login_ts"] = time.time()
+    audit.log_event("login", user["username"])
     resp = JSONResponse({"ok": True, "user": {"username": user["username"], "role": user["role"]}})
     resp.set_cookie(
         SESSION_COOKIE,
@@ -225,7 +229,14 @@ async def api_login(request: Request):
 
 
 @auth_router.post("/api/logout")
-async def api_logout():
+async def api_logout(request: Request):
+    user = get_session_user(request)
+    if user:
+        duration = None
+        login_ts = user.get("login_ts")
+        if login_ts:
+            duration = max(0.0, time.time() - float(login_ts))
+        audit.log_event("logout", user.get("username"), duration=duration)
     resp = JSONResponse({"ok": True})
     resp.delete_cookie(SESSION_COOKIE)
     return resp
@@ -287,3 +298,11 @@ async def api_delete_user(request: Request, username: str):
         )
     ok, message = delete_user(username)
     return JSONResponse({"ok": ok, "message": message}, status_code=200 if ok else 400)
+
+
+@auth_router.get("/api/audit")
+async def api_audit(request: Request, limit: int = 300, user: str = None, type: str = None):
+    session_user = get_session_user(request)
+    if not session_user or session_user.get("role") != ROLE_ADMIN:
+        return JSONResponse({"detail": "No autorizado"}, status_code=403)
+    return {"events": audit.read_events(limit=limit, user=user, event_type=type)}

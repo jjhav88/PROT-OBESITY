@@ -30,6 +30,7 @@ from auth import (
     is_admin_only_path,
     ROLE_ADMIN,
 )
+import audit
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, PageBreak, PageTemplate, Frame
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.colors import black
@@ -65,7 +66,17 @@ async def auth_guard(request: Request, call_next):
             return RedirectResponse(url="/")
         return JSONResponse({"detail": "No autorizado"}, status_code=403)
 
-    return await call_next(request)
+    response = await call_next(request)
+
+    if request.method in ("POST", "PUT", "PATCH", "DELETE") and path not in ("/api/login", "/api/logout"):
+        audit.log_event(
+            "action",
+            user.get("username"),
+            detail=f"{request.method} {path}",
+            status=response.status_code,
+        )
+
+    return response
 
 
 # Incluir el router de Historia Clínica

@@ -67,6 +67,40 @@
                 </table>
             </div>
         </section>
+
+        <section class="usr-card usr-card-full">
+            <div class="usr-audit-head">
+                <div>
+                    <h2>Registro de actividad (trazas)</h2>
+                    <p class="usr-hint">Inicios y cierres de sesión, y acciones de cambio realizadas por cada usuario.</p>
+                </div>
+                <div class="usr-audit-controls">
+                    <select id="audit-filter">
+                        <option value="">Todos los eventos</option>
+                        <option value="login">Inicios de sesión</option>
+                        <option value="logout">Cierres de sesión</option>
+                        <option value="action">Acciones de cambio</option>
+                    </select>
+                    <button type="button" class="usr-btn usr-btn-sm" id="audit-refresh">Actualizar</button>
+                </div>
+            </div>
+            <div class="usr-table-wrap">
+                <table class="usr-table">
+                    <thead>
+                        <tr>
+                            <th>Fecha y hora</th>
+                            <th>Usuario</th>
+                            <th>Evento</th>
+                            <th>Detalle</th>
+                            <th>Duración</th>
+                        </tr>
+                    </thead>
+                    <tbody id="audit-tbody">
+                        <tr><td colspan="5" class="usr-empty">Cargando…</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
     </main>
 
     <script src="/static/usuarios.js"></script>
